@@ -14,3 +14,6 @@ dependencyResolutionManagement {
 }
 rootProject.name = "SakuraAnimePlugin"
 include(":app")
+val pluginApi = ":MediaBoxPluginApi"
+include(pluginApi)
+project(pluginApi).projectDir = File("./submodules/MediaBoxPlugin/pluginApi")

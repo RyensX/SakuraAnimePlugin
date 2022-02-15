@@ -1,6 +1,5 @@
 package com.su.sakuraanimeplugin
 
-import PLUGIN
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.su.sakuraanimeplugin.databinding.ActivityMainBinding
@@ -14,6 +13,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.pluginInfo.text = PLUGIN
+        binding.pluginInfo.text = "樱花动漫MediaBox插件"
     }
 }
