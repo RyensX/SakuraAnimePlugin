@@ -15,11 +15,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MediaBoxPluginSample">
         <activity
-            android:name="com.su.sakuraanimeplugin.MainActivity"
+            android:name=".OtherActivity"
+            android:exported="true"
+            android:label="关于">
+            <intent-filter>
+                <!--这个Action只能标一次，一般可以标记在写关于信息的Activity上-->
+                <action android:name="media_box_plugin_action" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <action android:name="media_box_plugin_action"/>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
