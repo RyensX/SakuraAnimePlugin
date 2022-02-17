@@ -175,7 +175,7 @@ object ParseHtmlUtil {
                     title, null, "", null, null,
                     AnimeEpisodeDataBean(
                         "",
-                        buildRouteActionUrl(Constant.ActionUrl.ANIME_PLAY, episodeUrl, episodeUrl),
+                        buildRouteActionUrl(Constant.ActionUrl.ANIME_PLAY, episodeUrl, CustomConst.host + url),
                         episodeTitle
                     ),
                     AnimeAreaBean("", areaUrl, CustomConst.host + areaUrl, areaTitle),
@@ -343,17 +343,18 @@ object ParseHtmlUtil {
         val animeEpisodeList: MutableList<AnimeEpisodeDataBean> = ArrayList()
         val elements: Elements = element.select("ul").select("li")
         for (k in elements.indices) {
+            val episodeUrl = elements[k].select("a").attr("href")
             if (selected != null && elements[k].className() == "sel") {
                 selected.title = elements[k].select("a").text()
-                selected.actionUrl = elements[k].select("a").attr("href")
+                //FIX_TODO 2022/2/17 23:08 0 这里被直接用于存储播放地址了
+                selected.actionUrl = episodeUrl
             }
-            val episodeUrl = elements[k].select("a").attr("href")
             animeEpisodeList.add(
                 AnimeEpisodeDataBean(
                     type,
                     buildRouteActionUrl(
                         Constant.ActionUrl.ANIME_PLAY,
-                        episodeUrl, episodeUrl
+                        episodeUrl
                     ),
                     elements[k].select("a").text()
                 )

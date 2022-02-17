@@ -118,36 +118,6 @@ class CustomPlayModel : IPlayComponent {
         return false
     }
 
-    override suspend fun getAnimeCoverImageBean(detailPartUrl: String): String? {
-        try {
-            val url = CustomConst.host + detailPartUrl
-            val document = JsoupUtil.getDocument(url)
-            //番剧头部信息
-            val area: Elements = document.getElementsByClass("area")
-            for (i in area.indices) {
-                val areaChildren = area[i].children()
-                for (j in areaChildren.indices) {
-                    when (areaChildren[j].className()) {
-                        "fire l" -> {
-                            val fireLChildren =
-                                areaChildren[j].select("[class=fire l]")[0].children()
-                            for (k in fireLChildren.indices) {
-                                if (fireLChildren[k].className() == "thumb l") {
-                                    return ParseHtmlUtil.getCoverUrl(
-                                        fireLChildren[k].select("img").attr("src"), url
-                                    )
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return null
-    }
-
     override suspend fun getAnimeEpisodeUrlData(partUrl: String): String? {
         val document = JsoupUtil.getDocument(CustomConst.host + partUrl)
         val children: Elements = document.select("body")[0].children()
