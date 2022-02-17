@@ -204,7 +204,7 @@ object ParseHtmlUtil {
             animeShowList.add(
                 AnimeCoverBean(
                     type,
-                    buildRouteActionUrl(Constant.ActionUrl.ANIME_DETAIL, url),
+                    buildRouteActionUrl(Constant.ActionUrl.ANIME_MONTH_NEW_ANIME, url),
                     CustomConst.host + url,
                     title, cover, ""
                 )

@@ -1,10 +1,15 @@
 # SakuraAnimePlugin
-[**MediaBox**](https://github.com/Ryensu/MediaBox)插件示例-樱花动漫
+[**MediaBox插件**](https://github.com/Ryensu/MediaBoxPlugin)示例-樱花动漫
 
-## 如何使用？
+## 如何使用
 1. 下载安装[MediaBox](https://github.com/Ryensu/MediaBox/releases)
 2. 下载安装本项目[安装包](https://github.com/Ryensu/SakuraAnimePlugin/releases)
 3. 打开**MediaBox**启动本插件
+
+## 运行截图
+![首页](doc/screenshot/首页.jpg) ![更新表](doc/screenshot/更新表.jpg)
+![排行榜](doc/screenshot/排行榜.jpg) ![排行榜2](doc/screenshot/排行榜2.jpg)
+![搜索](doc/screenshot/搜索.jpg) ![番剧详情](doc/screenshot/番剧详情.jpg)
 
 ## 免责声明
 
