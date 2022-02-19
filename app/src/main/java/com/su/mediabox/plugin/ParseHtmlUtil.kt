@@ -71,7 +71,7 @@ object ParseHtmlUtil {
                             ClassifyBean(
                                 type,
                                 "",
-                                pChildren[j].text().replace(":","").replace("：",""),
+                                pChildren[j].text().replace(":", "").replace("：", ""),
                                 ArrayList()
                             )
                         )
@@ -175,7 +175,11 @@ object ParseHtmlUtil {
                     title, null, "", null, null,
                     AnimeEpisodeDataBean(
                         "",
-                        buildRouteActionUrl(Constant.ActionUrl.ANIME_PLAY, episodeUrl, CustomConst.host + url),
+                        buildRouteActionUrl(
+                            Constant.ActionUrl.ANIME_PLAY,
+                            episodeUrl,
+                            CustomConst.host + url
+                        ),
                         episodeTitle
                     ),
                     AnimeAreaBean("", areaUrl, CustomConst.host + areaUrl, areaTitle),
@@ -234,7 +238,12 @@ object ParseHtmlUtil {
                 animeType.add(
                     AnimeTypeBean(
                         type,
-                        buildRouteActionUrl(Constant.ActionUrl.ANIME_CLASSIFY, types[j].attr("href"),"",types[j].text()),
+                        buildRouteActionUrl(
+                            Constant.ActionUrl.ANIME_CLASSIFY,
+                            types[j].attr("href"),
+                            "",
+                            types[j].text()
+                        ),
                         CustomConst.host + types[j].attr("href"),
                         types[j].text()
                     )
@@ -279,7 +288,12 @@ object ParseHtmlUtil {
                 animeType.add(
                     AnimeTypeBean(
                         type,
-                        buildRouteActionUrl(Constant.ActionUrl.ANIME_CLASSIFY, types[j].attr("href"),"",types[j].text()),
+                        buildRouteActionUrl(
+                            Constant.ActionUrl.ANIME_CLASSIFY,
+                            types[j].attr("href"),
+                            "",
+                            types[j].text()
+                        ),
                         CustomConst.host + types[j].attr("href"),
                         types[j].text()
                     )
@@ -356,6 +370,31 @@ object ParseHtmlUtil {
                         Constant.ActionUrl.ANIME_PLAY,
                         episodeUrl
                     ),
+                    elements[k].select("a").text()
+                )
+            )
+        }
+        return animeEpisodeList
+    }
+
+    //UP_TODO 2022/2/19 18:28 0 parseMovurls被详情页和播放页混同了，导致AnimeEpisodeDataBean::actionUrl没有按照路由使用，需要重新改造播放机制
+    fun parsePlayMovurls(
+        element: Element,
+        selected: AnimeEpisodeDataBean? = null,
+        type: String = Constant.ViewHolderTypeString.ANIME_EPISODE_2
+    ): List<AnimeEpisodeDataBean> {
+        val animeEpisodeList: MutableList<AnimeEpisodeDataBean> = ArrayList()
+        val elements: Elements = element.select("ul").select("li")
+        for (k in elements.indices) {
+            val episodeUrl = elements[k].select("a").attr("href")
+            if (selected != null && elements[k].className() == "sel") {
+                selected.title = elements[k].select("a").text()
+                //FIX_TODO 2022/2/17 23:08 0 这里被直接用于存储播放地址了
+                selected.actionUrl = episodeUrl
+            }
+            animeEpisodeList.add(
+                AnimeEpisodeDataBean(
+                    type, episodeUrl,
                     elements[k].select("a").text()
                 )
             )

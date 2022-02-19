@@ -71,7 +71,7 @@ class CustomPlayModel : IPlayComponent {
                             }
                             "movurls" -> {      //集数列表
                                 episodesList.addAll(
-                                    ParseHtmlUtil.parseMovurls(
+                                    ParseHtmlUtil.parsePlayMovurls(
                                         areaChildren[j],
                                         animeEpisodeDataBean
                                     )
