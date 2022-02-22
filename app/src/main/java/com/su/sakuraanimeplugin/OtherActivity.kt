@@ -18,7 +18,7 @@ class OtherActivity : AppCompatActivity() {
 
         binding.root.text = """
             数据源地址： ${CustomConst.host}
-            开源地址：https://github.com/Ryensu/SakuraAnimePlugin
+            开源地址：https://github.com/RyensX/SakuraAnimePlugin
             
             这是一个解析樱花动漫的MediaBox插件示例
             
