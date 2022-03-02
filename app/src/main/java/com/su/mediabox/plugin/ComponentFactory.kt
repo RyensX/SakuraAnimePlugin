@@ -2,6 +2,7 @@ package com.su.mediabox.plugin
 
 import com.su.mediabox.pluginapi.components.*
 import com.su.mediabox.pluginapi.IComponentFactory
+import com.su.mediabox.pluginapi.v2.components.IVideoDetailDataComponent
 
 /**
  * 每个插件必须实现本类
@@ -11,7 +12,6 @@ import com.su.mediabox.pluginapi.IComponentFactory
 class ComponentFactory : IComponentFactory() {
 
     override fun <T : IBaseComponent> createComponent(clazz: Class<T>) = when (clazz) {
-        IAnimeDetailComponent::class.java -> CustomAnimeDetailModel()
         IMonthAnimeComponent::class.java -> CustomMonthAnimeModel()
         IAnimeShowComponent::class.java -> CustomAnimeShowModel()
         IClassifyComponent::class.java -> CustomClassifyModel()
@@ -23,6 +23,7 @@ class ComponentFactory : IComponentFactory() {
         IRankListComponent::class.java -> CustomRankListModel()
         IRankComponent::class.java -> CustomRankModel()
         ISearchComponent::class.java -> CustomSearchModel()
+        IVideoDetailDataComponent::class.java -> CustomVideoDetailDataComponent()
         else -> null
     } as? T
 
