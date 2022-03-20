@@ -3,6 +3,7 @@ package com.su.mediabox.plugin
 import com.su.mediabox.pluginapi.components.*
 import com.su.mediabox.pluginapi.IComponentFactory
 import com.su.mediabox.pluginapi.v2.components.IVideoDetailDataComponent
+import com.su.mediabox.pluginapi.v2.components.IVideoPlayComponent
 
 /**
  * 每个插件必须实现本类
@@ -18,7 +19,7 @@ class ComponentFactory : IComponentFactory() {
         IConstComponent::class.java -> CustomConst
         IEverydayAnimeComponent::class.java -> CustomEverydayAnimeModel()
         IHomeComponent::class.java -> CustomHomeModel()
-        IHomeComponent::class.java -> CustomHomeModel()
+        IVideoPlayComponent::class.java -> CustomVideoPlayComponent()
         IPlayComponent::class.java -> CustomPlayModel()
         IRankListComponent::class.java -> CustomRankListModel()
         IRankComponent::class.java -> CustomRankModel()
