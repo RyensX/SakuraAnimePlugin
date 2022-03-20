@@ -4,6 +4,7 @@ import com.su.mediabox.pluginapi.components.*
 import com.su.mediabox.pluginapi.IComponentFactory
 import com.su.mediabox.pluginapi.v2.components.IVideoDetailDataComponent
 import com.su.mediabox.pluginapi.v2.components.IVideoPlayComponent
+import com.su.mediabox.pluginapi.v2.components.IVideoSearchDataComponent
 
 /**
  * 每个插件必须实现本类
@@ -20,10 +21,9 @@ class ComponentFactory : IComponentFactory() {
         IEverydayAnimeComponent::class.java -> CustomEverydayAnimeModel()
         IHomeComponent::class.java -> CustomHomeModel()
         IVideoPlayComponent::class.java -> CustomVideoPlayComponent()
-        IPlayComponent::class.java -> CustomPlayModel()
         IRankListComponent::class.java -> CustomRankListModel()
         IRankComponent::class.java -> CustomRankModel()
-        ISearchComponent::class.java -> CustomSearchModel()
+        IVideoSearchDataComponent::class.java -> CustomVideoSearchDataComponent()
         IVideoDetailDataComponent::class.java -> CustomVideoDetailDataComponent()
         else -> null
     } as? T
