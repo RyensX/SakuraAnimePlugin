@@ -127,7 +127,7 @@ class CustomVideoDetailDataComponent : IVideoDetailDataComponent {
                                     val series = parseSeries(fireLChildren[k])
                                     if (series.isNotEmpty()) {
                                         details.add(TextData("系列作品", fontSize = 16F))
-                                        details.add(VideoGridData(series))
+                                        details.add(GridData(series))
                                     }
                                 }
                             }

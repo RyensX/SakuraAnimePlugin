@@ -3,12 +3,9 @@ package com.su.mediabox.plugin
 import android.net.Uri
 import com.su.mediabox.pluginapi.Constant
 import com.su.mediabox.pluginapi.Text
-import com.su.mediabox.pluginapi.been.AnimeCoverBean
-import com.su.mediabox.pluginapi.been.AnimeTypeBean
-import com.su.mediabox.pluginapi.been.PageNumberBean
-import com.su.mediabox.pluginapi.components.ISearchComponent
+import com.su.mediabox.pluginapi.v2.been.BaseData
 import com.su.mediabox.pluginapi.v2.been.TagData
-import com.su.mediabox.pluginapi.v2.been.VideoLinearItemData
+import com.su.mediabox.pluginapi.v2.been.VideoInfoItemData
 import com.su.mediabox.pluginapi.v2.components.IVideoSearchDataComponent
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
@@ -18,8 +15,8 @@ class CustomVideoSearchDataComponent : IVideoSearchDataComponent {
     fun parseSearch(
         element: Element,
         imageReferer: String
-    ): List<VideoLinearItemData> {
-        val animeCover3List: MutableList<VideoLinearItemData> = java.util.ArrayList()
+    ): List<BaseData> {
+        val animeCover3List = mutableListOf<BaseData>()
         val results: Elements = element.select("ul").select("li")
         for (i in results.indices) {
             var cover = results[i].select("a").select("img").attr("src")
@@ -43,7 +40,7 @@ class CustomVideoSearchDataComponent : IVideoSearchDataComponent {
                 })
             }
             val describe = results[i].select("p").text()
-            val item = VideoLinearItemData(
+            val item = VideoInfoItemData(
                 title, cover, CustomConst.host + url,
                 episode, describe, tags
             )
@@ -55,9 +52,9 @@ class CustomVideoSearchDataComponent : IVideoSearchDataComponent {
         return animeCover3List
     }
 
-    override suspend fun getSearchData(keyWord: String, page: Int): List<VideoLinearItemData> {
+    override suspend fun getSearchData(keyWord: String, page: Int): List<BaseData> {
         val const = CustomConst
-        val searchResultList: ArrayList<VideoLinearItemData> = ArrayList()
+        val searchResultList = mutableListOf<BaseData>()
         val url =
             "${const.host}${const.ANIME_SEARCH}${Uri.encode(keyWord, ":/-![].,%?&=")}/$page"
         val document = JsoupUtil.getDocument(url)
