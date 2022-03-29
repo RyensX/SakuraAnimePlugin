@@ -1,8 +1,8 @@
 package com.su.mediabox.plugin
 
 import android.net.Uri
-import com.su.mediabox.pluginapi.Constant
-import com.su.mediabox.pluginapi.Text
+import com.su.mediabox.pluginapi.v2.action.ClassifyAction
+import com.su.mediabox.pluginapi.v2.action.DetailAction
 import com.su.mediabox.pluginapi.v2.been.BaseData
 import com.su.mediabox.pluginapi.v2.been.TagData
 import com.su.mediabox.pluginapi.v2.been.VideoInfoItemData
@@ -31,11 +31,9 @@ class CustomVideoSearchDataComponent : IVideoSearchDataComponent {
             val tags = mutableListOf<TagData>()
             for (j in types.indices) {
                 tags.add(TagData(types[j].text()).apply {
-                    actionUrl = Text.buildRouteActionUrl(
-                        Constant.ActionUrl.ANIME_CLASSIFY,
+                    action = ClassifyAction.obtain(
                         types[j].attr("href"),
-                        "",
-                        types[j].text()
+                        "", types[j].text()
                     )
                 })
             }
@@ -45,7 +43,7 @@ class CustomVideoSearchDataComponent : IVideoSearchDataComponent {
                 episode, describe, tags
             )
                 .apply {
-                    actionUrl = Text.buildRouteActionUrl(Constant.ActionUrl.ANIME_DETAIL, url)
+                    action = DetailAction.obtain(url)
                 }
             animeCover3List.add(item)
         }

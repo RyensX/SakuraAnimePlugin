@@ -1,10 +1,11 @@
 package com.su.mediabox.plugin
 
 import android.view.Gravity
-import com.su.mediabox.pluginapi.Constant
-import com.su.mediabox.pluginapi.Text.buildRouteActionUrl
 import com.su.mediabox.pluginapi.Text.urlEncode
 import com.su.mediabox.pluginapi.UI.dp
+import com.su.mediabox.pluginapi.v2.action.ClassifyAction
+import com.su.mediabox.pluginapi.v2.action.DetailAction
+import com.su.mediabox.pluginapi.v2.action.PlayAction
 import com.su.mediabox.pluginapi.v2.been.*
 import com.su.mediabox.pluginapi.v2.components.IVideoDetailDataComponent
 import org.jsoup.nodes.Element
@@ -54,18 +55,15 @@ class CustomVideoDetailDataComponent : IVideoDetailDataComponent {
                                     val year = Regex("\\d+").find(yearEm.text())?.value
                                     if (year != null)
                                         tags.add(TagData(year).apply {
-                                            actionUrl = buildRouteActionUrl(
-                                                Constant.ActionUrl.ANIME_CLASSIFY,
+                                            action = ClassifyAction.obtain(
                                                 yearEm.attr("href"),
-                                                "",
-                                                year
+                                                "", year
                                             )
                                         })
                                     //地区
                                     val animeArea = span[1].select("a")
                                     tags.add(TagData(animeArea.text()).apply {
-                                        actionUrl = buildRouteActionUrl(
-                                            Constant.ActionUrl.ANIME_CLASSIFY,
+                                        action = ClassifyAction.obtain(
                                             animeArea.attr("href"),
                                             "",
                                             animeArea.text()
@@ -76,8 +74,7 @@ class CustomVideoDetailDataComponent : IVideoDetailDataComponent {
                                     val typeElements: Elements = span[2].select("a")
                                     for (l in typeElements.indices) {
                                         tags.add(TagData(typeElements[l].text()).apply {
-                                            actionUrl = buildRouteActionUrl(
-                                                Constant.ActionUrl.ANIME_CLASSIFY,
+                                            action = ClassifyAction.obtain(
                                                 typeElements[l].attr("href"),
                                                 "",
                                                 typeElements[l].text()
@@ -88,8 +85,7 @@ class CustomVideoDetailDataComponent : IVideoDetailDataComponent {
                                     val tagElements: Elements = span[4].select("a")
                                     for (l in tagElements.indices) {
                                         tags.add(TagData(tagElements[l].text()).apply {
-                                            actionUrl = buildRouteActionUrl(
-                                                Constant.ActionUrl.ANIME_CLASSIFY,
+                                            action = ClassifyAction.obtain(
                                                 tagElements[l].attr("href"),
                                                 "",
                                                 tagElements[l].text()
@@ -160,10 +156,7 @@ class CustomVideoDetailDataComponent : IVideoDetailDataComponent {
             val episodeUrl = elements[k].select("a").attr("href")
             episodeList.add(
                 EpisodeData(elements[k].select("a").text(), episodeUrl).apply {
-                    actionUrl = buildRouteActionUrl(
-                        Constant.ActionUrl.ANIME_PLAY,
-                        episodeUrl
-                    )
+                    action = PlayAction.obtain(episodeUrl)
                 }
             )
         }
@@ -182,7 +175,7 @@ class CustomVideoDetailDataComponent : IVideoDetailDataComponent {
                 episode = elements[i].select("p")[1].select("a").text()
             }
             videos.add(VideoGridItemData(title, cover, CustomConst.host + url, episode).apply {
-                actionUrl = buildRouteActionUrl(Constant.ActionUrl.ANIME_DETAIL, url)
+                action = DetailAction.obtain(url)
             })
         }
         return videos
