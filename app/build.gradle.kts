@@ -10,8 +10,8 @@ android {
         applicationId = "com.su.sakuraanimeplugin"
         minSdk = 21
         targetSdk = 31
-        versionCode = 3
-        versionName = "1.2"
+        versionCode = 4
+        versionName = "1.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -23,9 +23,11 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            resValue("string", "app_name", "樱花动漫")
         }
         debug {
             applicationIdSuffix = ".debug"
+            resValue("string", "app_name", "樱花")
         }
     }
     compileOptions {
