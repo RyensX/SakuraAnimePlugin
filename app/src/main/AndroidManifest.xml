@@ -6,6 +6,7 @@
     <uses-permission
         android:name="android.permission.QUERY_ALL_PACKAGES"
         tools:ignore="QueryAllPackagesPermission" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -13,7 +14,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_sakura_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MediaBoxPluginSample">
+        android:theme="@style/Theme.MediaBoxPluginSample"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="m">
         <activity
             android:name=".OtherActivity"
             android:exported="true"

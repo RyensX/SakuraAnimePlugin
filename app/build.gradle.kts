@@ -53,4 +53,6 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
     implementation("org.jsoup:jsoup:1.14.3")
+    androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
+    androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.1")
 }
