@@ -6,14 +6,17 @@ import java.util.ArrayList
 import com.su.mediabox.pluginapi.Constant
 import com.su.mediabox.pluginapi.Text.buildRouteActionUrl
 import com.su.mediabox.pluginapi.been.*
+import com.su.mediabox.pluginapi.v2.action.ClassifyAction
+import com.su.mediabox.pluginapi.v2.action.DetailAction
+import com.su.mediabox.pluginapi.v2.been.BaseData
+import com.su.mediabox.pluginapi.v2.been.ClassifyItemData
+import com.su.mediabox.pluginapi.v2.been.TagData
+import com.su.mediabox.pluginapi.v2.been.VideoInfoItemData
 import java.net.URL
 
 object ParseHtmlUtil {
 
-    fun parseIframeSrc(element: Element): String {
-        return element.attr("src")
-    }
-
+    @Deprecated("V2后废弃")
     fun parseHeroWrap(      //banner
         element: Element,
         type: String = Constant.ViewHolderTypeString.ANIME_COVER_6
@@ -56,6 +59,7 @@ object ParseHtmlUtil {
         return list
     }
 
+    @Deprecated("V2后废弃")
     fun parseTers(
         element: Element,
         type: String = Constant.ViewHolderTypeString.EMPTY_STRING
@@ -97,6 +101,7 @@ object ParseHtmlUtil {
         return list
     }
 
+    @Deprecated("V2后废弃")
     fun parseTlist(
         element: Element,
         type: String = Constant.ViewHolderTypeString.ANIME_COVER_5
@@ -190,6 +195,7 @@ object ParseHtmlUtil {
         return animeShowList
     }
 
+    @Deprecated("V2后废弃")
     fun parseDnews(
         element: Element,
         imageReferer: String,
@@ -217,6 +223,7 @@ object ParseHtmlUtil {
         return animeShowList
     }
 
+    @Deprecated("V2后废弃")
     fun parsePics(      //一周动漫排行榜
         element: Element,
         type: String = Constant.ViewHolderTypeString.ANIME_COVER_3
@@ -266,6 +273,7 @@ object ParseHtmlUtil {
         return animeCover3List
     }
 
+    @Deprecated("V2后废弃")
     fun parseLpic(          //搜索
         element: Element,
         imageReferer: String,
@@ -319,6 +327,7 @@ object ParseHtmlUtil {
     /**
      * 只获取下一页的地址，没有下一页则返回null
      */
+    @Deprecated("V2后废弃")
     fun parseNextPages(
         element: Element,
         type: String = "pageNumber1"
@@ -337,18 +346,21 @@ object ParseHtmlUtil {
         return null
     }
 
+    @Deprecated("V2后废弃")
     fun parseDtit(
         element: Element
     ): String {
         return element.children()[0].text()
     }
 
+    @Deprecated("V2后废弃")
     fun parseBotit(
         element: Element
     ): String {
         return element.select("h2").text()
     }
 
+    @Deprecated("V2后废弃")
     fun parseMovurls(
         element: Element,
         selected: AnimeEpisodeDataBean? = null,
@@ -402,6 +414,7 @@ object ParseHtmlUtil {
         return animeEpisodeList
     }
 
+    @Deprecated("V2后废弃")
     fun parseImg(
         element: Element,
         imageReferer: String,
@@ -449,5 +462,66 @@ object ParseHtmlUtil {
             }
             else -> cover
         }
+    }
+
+    /**
+     * 解析搜索元素
+     */
+    fun parseSearchEm(
+        element: Element,
+        imageReferer: String
+    ): List<BaseData> {
+        val videoInfoItemDataList = mutableListOf<BaseData>()
+        val results: Elements = element.select("ul").select("li")
+        for (i in results.indices) {
+            var cover = results[i].select("a").select("img").attr("src")
+            cover = getCoverUrl(cover, imageReferer)
+            val title = results[i].select("h2").select("a").attr("title")
+            val url = results[i].select("h2").select("a").attr("href")
+            val episode = results[i].select("span").select("font").text()
+            val types = results[i].select("span")[1].select("a")
+            val tags = mutableListOf<TagData>()
+            for (type in types)
+                tags.add(TagData(type.text()).apply {
+                    action = ClassifyAction.obtain(
+                        type.attr("href"),
+                        "", type.text()
+                    )
+                })
+            val describe = results[i].select("p").text()
+            val item = VideoInfoItemData(
+                title, cover, CustomConst.host + url,
+                episode, describe, tags
+            )
+                .apply {
+                    action = DetailAction.obtain(url)
+                }
+            videoInfoItemDataList.add(item)
+        }
+        return videoInfoItemDataList
+    }
+
+    /**
+     * 解析分类元素
+     */
+    fun parseClassifyEm(element: Element): List<ClassifyItemData> {
+        val classifyItemDataList = mutableListOf<ClassifyItemData>()
+        var classifyCategory = ""
+        for (em in element.select("p"))
+            for (target in em.children())
+                when (target.tagName()) {
+                    //分类类别
+                    "label" -> classifyCategory =
+                        target.text().replace(":", "").replace("：", "").trim()
+                    //分类项
+                    "a" -> classifyItemDataList.add(ClassifyItemData().apply {
+                        action = ClassifyAction.obtain(
+                            target.attr("href"),
+                            classifyCategory,
+                            target.text()
+                        )
+                    })
+                }
+        return classifyItemDataList
     }
 }

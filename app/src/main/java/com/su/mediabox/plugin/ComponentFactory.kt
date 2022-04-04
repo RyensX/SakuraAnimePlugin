@@ -2,6 +2,7 @@ package com.su.mediabox.plugin
 
 import com.su.mediabox.pluginapi.components.*
 import com.su.mediabox.pluginapi.IComponentFactory
+import com.su.mediabox.pluginapi.v2.components.IMediaClassifyDataComponent
 import com.su.mediabox.pluginapi.v2.components.IVideoDetailDataComponent
 import com.su.mediabox.pluginapi.v2.components.IVideoPlayComponent
 import com.su.mediabox.pluginapi.v2.components.IVideoSearchDataComponent
@@ -25,6 +26,7 @@ class ComponentFactory : IComponentFactory() {
         IRankComponent::class.java -> CustomRankModel()
         IVideoSearchDataComponent::class.java -> CustomVideoSearchDataComponent()
         IVideoDetailDataComponent::class.java -> CustomVideoDetailDataComponent()
+        IMediaClassifyDataComponent::class.java -> CustomMediaClassifyDataComponent()
         else -> null
     } as? T
 
