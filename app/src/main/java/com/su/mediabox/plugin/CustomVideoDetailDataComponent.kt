@@ -1,5 +1,6 @@
 package com.su.mediabox.plugin
 
+import android.graphics.Color
 import android.view.Gravity
 import com.su.mediabox.pluginapi.Text.urlEncode
 import com.su.mediabox.pluginapi.UI.dp
@@ -103,7 +104,10 @@ class CustomVideoDetailDataComponent : IVideoDetailDataComponent {
                                         TextData(
                                             fireLChildren[k].select("[class=menu0]")
                                                 .select("li").text() + "($upState)",
-                                            fontSize = 16F
+                                            fontSize = 16F,
+                                            fontColor = Color.WHITE,
+                                            paddingLeft = 16.dp,
+                                            paddingRight = 16.dp
                                         )
                                     )
 
@@ -122,7 +126,15 @@ class CustomVideoDetailDataComponent : IVideoDetailDataComponent {
                                 "img" -> {         //系列动漫推荐
                                     val series = parseSeries(fireLChildren[k])
                                     if (series.isNotEmpty()) {
-                                        details.add(TextData("系列作品", fontSize = 16F))
+                                        details.add(
+                                            TextData(
+                                                "系列作品",
+                                                fontSize = 16F,
+                                                fontColor = Color.WHITE,
+                                                paddingLeft = 16.dp,
+                                                paddingRight = 16.dp
+                                            )
+                                        )
                                         details.add(GridData(series))
                                     }
                                 }
@@ -137,14 +149,21 @@ class CustomVideoDetailDataComponent : IVideoDetailDataComponent {
             add(
                 TextData(
                     title,
+                    fontColor = Color.WHITE,
                     fontSize = 20F,
                     gravity = Gravity.CENTER,
                     fontStyle = 1,
-                    paddingBottom = 12.dp
+                    paddingBottom = 12.dp, paddingLeft = 16.dp, paddingRight = 16.dp
                 )
             )
             add(TagFlowData(tags))
-            add(LongTextData(desc.addDouBanSearch(title), paddingTop = 16.dp))
+            add(
+                LongTextData(
+                    desc.addDouBanSearch(title),
+                    paddingTop = 16.dp,
+                    fontColor = Color.WHITE
+                )
+            )
             addAll(details)
         })
     }

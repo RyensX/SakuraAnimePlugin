@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.su.mediabox.plugin.ComponentFactory
+import com.su.mediabox.pluginapi.v2.components.IHomeDataComponent
 import com.su.mediabox.pluginapi.v2.components.IVideoDetailDataComponent
 import kotlinx.coroutines.runBlocking
 
@@ -35,5 +36,20 @@ class DataComponentUnitTest {
                 }
             }
         assertNotNull(detailDataComponent)
+    }
+
+    @Test
+    fun testHomeDataComponent() = runBlocking {
+        val factory = ComponentFactory()
+        val dataComponent =
+            factory.createComponent(IHomeDataComponent::class.java)?.apply {
+                val data = getData(0)
+                assert(!data.isNullOrEmpty())
+
+                data?.forEach {
+                    Log.d("*查看数据", it.toString())
+                }
+            }
+        assertNotNull(dataComponent)
     }
 }

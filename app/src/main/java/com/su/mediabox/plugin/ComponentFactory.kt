@@ -2,10 +2,7 @@ package com.su.mediabox.plugin
 
 import com.su.mediabox.pluginapi.components.*
 import com.su.mediabox.pluginapi.IComponentFactory
-import com.su.mediabox.pluginapi.v2.components.IMediaClassifyDataComponent
-import com.su.mediabox.pluginapi.v2.components.IVideoDetailDataComponent
-import com.su.mediabox.pluginapi.v2.components.IVideoPlayComponent
-import com.su.mediabox.pluginapi.v2.components.IVideoSearchDataComponent
+import com.su.mediabox.pluginapi.v2.components.*
 
 /**
  * 每个插件必须实现本类
@@ -27,6 +24,7 @@ class ComponentFactory : IComponentFactory() {
         IVideoSearchDataComponent::class.java -> CustomVideoSearchDataComponent()
         IVideoDetailDataComponent::class.java -> CustomVideoDetailDataComponent()
         IMediaClassifyDataComponent::class.java -> CustomMediaClassifyDataComponent()
+        IHomeDataComponent::class.java -> CustomHomeDataComponent()
         else -> null
     } as? T
 
