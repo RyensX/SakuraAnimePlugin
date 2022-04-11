@@ -1,9 +1,7 @@
 package com.su.mediabox.plugin
 
-import android.graphics.Color
 import android.graphics.Typeface
 import android.util.Log
-import com.su.mediabox.pluginapi.UI.dp
 import com.su.mediabox.pluginapi.v2.action.DetailAction
 import com.su.mediabox.pluginapi.v2.been.*
 import com.su.mediabox.pluginapi.v2.components.IHomeDataComponent
@@ -27,15 +25,7 @@ class CustomHomeDataComponent : IHomeDataComponent {
                 "dtit" -> {
                     val typeName = em.select("h2").text()
                     if (!typeName.isNullOrBlank()) {
-                        data.add(
-                            TextData(
-                                typeName,
-                                fontSize = 18F,
-                                fontStyle = Typeface.BOLD,
-                                paddingLeft = 16.dp,
-                                paddingRight = 16.dp
-                            )
-                        )
+                        data.add(TextData(typeName, fontSize = 18F, fontStyle = Typeface.BOLD))
                         Log.d("视频分类", typeName)
                     }
                 }
