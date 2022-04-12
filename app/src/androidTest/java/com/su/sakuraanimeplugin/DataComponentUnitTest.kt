@@ -43,9 +43,8 @@ class DataComponentUnitTest {
         val factory = ComponentFactory()
         val dataComponent =
             factory.createComponent(IHomeDataComponent::class.java)?.apply {
-                val data = getData(0)
+                val data = getData(1)
                 assert(!data.isNullOrEmpty())
-
                 data?.forEach {
                     Log.d("*查看数据", it.toString())
                 }

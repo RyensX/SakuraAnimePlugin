@@ -2,9 +2,14 @@ package com.su.mediabox.plugin
 
 import android.graphics.Typeface
 import android.util.Log
+import com.su.mediabox.pluginapi.Constant
+import com.su.mediabox.pluginapi.UI.dp
+import com.su.mediabox.pluginapi.been.AnimeShowBean
 import com.su.mediabox.pluginapi.v2.action.DetailAction
 import com.su.mediabox.pluginapi.v2.been.*
 import com.su.mediabox.pluginapi.v2.components.IHomeDataComponent
+import org.jsoup.select.Elements
+import java.lang.StringBuilder
 
 class CustomHomeDataComponent : IHomeDataComponent {
 
@@ -13,11 +18,49 @@ class CustomHomeDataComponent : IHomeDataComponent {
             return null
         val url = CustomConst.host
         val doc = JsoupUtil.getDocument(url)
-        val types = doc.getElementsByClass("firs l").first() ?: return null
         val data = mutableListOf<BaseData>()
 
-        //TODO 由于还没轮播图视图组件所以暂未提供轮播图解析
+        //横幅
+        doc.getElementsByClass("foucs bg").first()?.apply {
+            val bannerItems = mutableListOf<BannerData.BannerItemData>()
+            for (em in children()) {
+                when (em.className()) {
+                    "hero-wrap" -> {
+                        em.select("[class=heros]").select("li").forEach { bannerItem ->
+                            val nameEm = bannerItem.select("p").first()
+                            val ext = StringBuilder()
+                            bannerItem.getElementsByTag("em").first()?.text()?.also {
+                                ext.append(it)
+                            }
+                            nameEm?.getElementsByTag("span")?.text()?.also {
+                                ext.append(" ").append(it)
+                            }
+                            val videoUrl = bannerItem.getElementsByTag("a").first()?.attr("href")
+                            val bannerImage = bannerItem.select("img").attr("src")
+                            if (bannerImage.isNotBlank()) {
+                                Log.d("添加横幅项", "封面：$bannerImage")
+                                bannerItems.add(
+                                    BannerData.BannerItemData(
+                                        bannerImage, nameEm?.ownText() ?: "", ext.toString(), 8.dp
+                                    ).apply {
+                                        if (!videoUrl.isNullOrBlank())
+                                            action = DetailAction.obtain(url)
+                                    }
+                                )
+                            }
+                        }
+                        break
+                    }
+                }
+            }
+            if (bannerItems.isNotEmpty())
+                data.add(BannerData(bannerItems).apply {
+                    paddingTop = 12.dp
+                })
+        }
 
+        //分离推荐
+        val types = doc.getElementsByClass("firs l").first() ?: return null
         for (em in types.children()) {
             Log.d("元素", em.className())
             when (em.className()) {
