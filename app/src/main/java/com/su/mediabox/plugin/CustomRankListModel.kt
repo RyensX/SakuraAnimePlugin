@@ -24,7 +24,7 @@ class CustomRankListModel : IRankListComponent {
         for (i in areaChildren.indices) {
             when (areaChildren[i].className()) {
                 "topli" -> {
-                    rankList.addAll(ParseHtmlUtil.parseTopli(areaChildren[i]))
+                    rankList.addAll(ParseHtmlUtil.parseTopli(areaChildren[i],""))
                 }
             }
         }

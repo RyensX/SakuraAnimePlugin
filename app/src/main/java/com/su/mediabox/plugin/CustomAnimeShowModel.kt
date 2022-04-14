@@ -114,7 +114,7 @@ class CustomAnimeShowModel : IAnimeShowComponent {
                     "topli" -> {       //右侧后半tab内容，cover5
                         animeShowList.addAll(
                             ParseHtmlUtil.parseTopli(
-                                elements[j]
+                                elements[j], ""
                             )
                         )
                     }

@@ -5,6 +5,8 @@ import android.util.Log
 import com.su.mediabox.pluginapi.Constant
 import com.su.mediabox.pluginapi.UI.dp
 import com.su.mediabox.pluginapi.been.AnimeShowBean
+import com.su.mediabox.pluginapi.been.TabBean
+import com.su.mediabox.pluginapi.v2.action.CustomDataAction
 import com.su.mediabox.pluginapi.v2.action.DetailAction
 import com.su.mediabox.pluginapi.v2.been.*
 import com.su.mediabox.pluginapi.v2.components.IHomeDataComponent
@@ -19,6 +21,41 @@ class CustomHomeDataComponent : IHomeDataComponent {
         val url = CustomConst.host
         val doc = JsoupUtil.getDocument(url)
         val data = mutableListOf<BaseData>()
+
+        //一周排行榜
+        val weekRank =
+            doc.getElementsByClass("pics")
+                .first()?.let {
+                    object : ViewPagerData.PageLoader {
+                        override fun pageName(page: Int): String {
+                            return "一周排行"
+                        }
+
+                        override suspend fun loadData(page: Int): List<BaseData> {
+                            return ParseHtmlUtil.parseSearchEm(it, url)
+                        }
+                    }
+                }
+        //动漫排行榜
+        val totalRank = object : ViewPagerData.PageLoader {
+            override fun pageName(page: Int): String {
+                return "动漫排行榜"
+            }
+
+            override suspend fun loadData(page: Int): List<BaseData> {
+                return getTotalRankData()
+            }
+        }
+        data.add(TextData("🏅排行榜", fontSize = 20F, fontStyle = Typeface.BOLD).apply {
+            paddingTop = 16.dp
+            action = CustomDataAction.obtain("排行榜", object : CustomDataAction.Loader {
+                override suspend fun loadData(page: Int): List<BaseData>? {
+                    if (page != 1)
+                        return null
+                    return listOf(ViewPagerData(mutableListOf(weekRank!!, totalRank)))
+                }
+            })
+        })
 
         //横幅
         doc.getElementsByClass("foucs bg").first()?.apply {
@@ -38,13 +75,13 @@ class CustomHomeDataComponent : IHomeDataComponent {
                             val videoUrl = bannerItem.getElementsByTag("a").first()?.attr("href")
                             val bannerImage = bannerItem.select("img").attr("src")
                             if (bannerImage.isNotBlank()) {
-                                Log.d("添加横幅项", "封面：$bannerImage")
+                                Log.d("添加横幅项", "封面：$bannerImage 链接：$videoUrl")
                                 bannerItems.add(
                                     BannerData.BannerItemData(
                                         bannerImage, nameEm?.ownText() ?: "", ext.toString(), 8.dp
                                     ).apply {
                                         if (!videoUrl.isNullOrBlank())
-                                            action = DetailAction.obtain(url)
+                                            action = DetailAction.obtain(videoUrl)
                                     }
                                 )
                             }
@@ -55,7 +92,7 @@ class CustomHomeDataComponent : IHomeDataComponent {
             }
             if (bannerItems.isNotEmpty())
                 data.add(BannerData(bannerItems).apply {
-                    paddingTop = 12.dp
+                    paddingTop = 0
                 })
         }
 
@@ -101,5 +138,20 @@ class CustomHomeDataComponent : IHomeDataComponent {
         }
 
         return data
+    }
+
+    private suspend fun getTotalRankData(): List<BaseData> {
+        val const = CustomConst
+        val document = JsoupUtil.getDocument(const.host + const.ANIME_RANK)
+        val areaChildren: Elements = document.select("[class=area]")[0].children()
+        val rankList = mutableListOf<BaseData>()
+        for (i in areaChildren.indices) {
+            when (areaChildren[i].className()) {
+                "topli" -> {
+                    rankList.addAll(ParseHtmlUtil.parseTopli(areaChildren[i]))
+                }
+            }
+        }
+        return rankList
     }
 }

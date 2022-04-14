@@ -5,13 +5,11 @@ import org.jsoup.select.Elements
 import java.util.ArrayList
 import com.su.mediabox.pluginapi.Constant
 import com.su.mediabox.pluginapi.Text.buildRouteActionUrl
+import com.su.mediabox.pluginapi.UI.dp
 import com.su.mediabox.pluginapi.been.*
 import com.su.mediabox.pluginapi.v2.action.ClassifyAction
 import com.su.mediabox.pluginapi.v2.action.DetailAction
-import com.su.mediabox.pluginapi.v2.been.BaseData
-import com.su.mediabox.pluginapi.v2.been.ClassifyItemData
-import com.su.mediabox.pluginapi.v2.been.TagData
-import com.su.mediabox.pluginapi.v2.been.VideoInfoItemData
+import com.su.mediabox.pluginapi.v2.been.*
 import java.net.URL
 
 object ParseHtmlUtil {
@@ -191,6 +189,44 @@ object ParseHtmlUtil {
                     date
                 )
             )
+        }
+        return animeShowList
+    }
+
+    fun parseTopli(
+        element: Element
+    ): List<BaseData> {
+        val animeShowList = mutableListOf<BaseData>()
+        val elements: Elements = element.select("ul").select("li")
+        for (i in elements.indices) {
+            var url: String
+            var title: String
+            if (elements[i].select("a").size >= 2) {    //最近更新，显示地区的情况
+                url = elements[i].select("a")[1].attr("href")
+                title = elements[i].select("a")[1].text()
+                if (elements[i].select("span")[0].children().size == 0) {     //最近更新，不显示地区的情况
+                    url = elements[i].select("a")[0].attr("href")
+                    title = elements[i].select("a")[0].text()
+                }
+            } else {                                            //总排行榜
+                url = elements[i].select("a")[0].attr("href")
+                title = elements[i].select("a")[0].text()
+            }
+
+            val areaUrl = elements[i].select("span").select("a")
+                .attr("href")
+            val areaTitle = elements[i].select("span").select("a").text()
+            var episodeUrl = elements[i].select("b").select("a")
+                .attr("href")
+            val episodeTitle = elements[i].select("b").select("a").text()
+            val date = elements[i].select("em").text()
+            if (episodeUrl == "") {
+                episodeUrl = url
+            }
+            animeShowList.add(TextData("${animeShowList.size + 1}. $title").apply {
+                paddingTop = 12.dp
+                action = DetailAction.obtain(url)
+            })
         }
         return animeShowList
     }
@@ -465,7 +501,9 @@ object ParseHtmlUtil {
     }
 
     /**
-     * 解析搜索元素
+     * 解析搜索/分类下的元素
+     *
+     * @param element ul的父元素
      */
     fun parseSearchEm(
         element: Element,
@@ -476,7 +514,7 @@ object ParseHtmlUtil {
         for (i in results.indices) {
             var cover = results[i].select("a").select("img").attr("src")
             cover = getCoverUrl(cover, imageReferer)
-            val title = results[i].select("h2").select("a").attr("title")
+            val title = results[i].select("h2").select("a").text()
             val url = results[i].select("h2").select("a").attr("href")
             val episode = results[i].select("span").select("font").text()
             val types = results[i].select("span")[1].select("a")
