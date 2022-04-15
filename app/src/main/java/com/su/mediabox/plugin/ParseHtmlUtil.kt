@@ -1,5 +1,7 @@
 package com.su.mediabox.plugin
 
+import android.graphics.Color
+import android.graphics.Typeface
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 import java.util.ArrayList
@@ -223,8 +225,14 @@ object ParseHtmlUtil {
             if (episodeUrl == "") {
                 episodeUrl = url
             }
-            animeShowList.add(TextData("${animeShowList.size + 1}. $title").apply {
-                paddingTop = 12.dp
+            animeShowList.add(TextData(
+                "${animeShowList.size + 1}. $title", fontStyle = Typeface.BOLD,
+                fontColor = Color.BLACK
+            ).apply {
+                paddingTop = 24.dp
+                paddingLeft = 16.dp
+                paddingRight = 16.dp
+                paddingBottom = 0
                 action = DetailAction.obtain(url)
             })
         }

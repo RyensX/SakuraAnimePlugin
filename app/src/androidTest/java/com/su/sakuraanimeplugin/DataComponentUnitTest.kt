@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.su.mediabox.plugin.ComponentFactory
+import com.su.mediabox.plugin.UpdateListLoader
 import com.su.mediabox.pluginapi.v2.components.IHomeDataComponent
 import com.su.mediabox.pluginapi.v2.components.IVideoDetailDataComponent
 import kotlinx.coroutines.runBlocking
@@ -50,5 +51,11 @@ class DataComponentUnitTest {
                 }
             }
         assertNotNull(dataComponent)
+    }
+
+    @Test
+    fun testLoader(): Unit = runBlocking {
+        val loader = UpdateListLoader()
+        loader.loadData(1)
     }
 }

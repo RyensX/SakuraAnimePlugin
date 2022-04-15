@@ -2,6 +2,7 @@ package com.su.mediabox.plugin
 
 import android.graphics.Typeface
 import android.util.Log
+import android.view.Gravity
 import com.su.mediabox.pluginapi.Constant
 import com.su.mediabox.pluginapi.UI.dp
 import com.su.mediabox.pluginapi.been.AnimeShowBean
@@ -22,6 +23,8 @@ class CustomHomeDataComponent : IHomeDataComponent {
         val doc = JsoupUtil.getDocument(url)
         val data = mutableListOf<BaseData>()
 
+        val menu = mutableListOf<BaseData>()
+        //1.排行榜，包含两项
         //一周排行榜
         val weekRank =
             doc.getElementsByClass("pics")
@@ -46,18 +49,39 @@ class CustomHomeDataComponent : IHomeDataComponent {
                 return getTotalRankData()
             }
         }
-        data.add(TextData("🏅排行榜", fontSize = 20F, fontStyle = Typeface.BOLD).apply {
-            paddingTop = 16.dp
-            action = CustomDataAction.obtain("排行榜", object : CustomDataAction.Loader {
-                override suspend fun loadData(page: Int): List<BaseData>? {
-                    if (page != 1)
-                        return null
-                    return listOf(ViewPagerData(mutableListOf(weekRank!!, totalRank)))
-                }
+        menu.add(
+            TextData(
+                "🏅排行榜",
+                fontSize = 18F,
+                fontStyle = Typeface.BOLD,
+                gravity = Gravity.CENTER
+            ).apply {
+                paddingTop = 16.dp
+                paddingBottom = 14.dp
+                action = CustomDataAction.obtain("排行榜", object : CustomDataAction.Loader {
+                    override suspend fun loadData(page: Int): List<BaseData>? {
+                        if (page != 1)
+                            return null
+                        return listOf(ViewPagerData(mutableListOf(weekRank!!, totalRank)))
+                    }
+                })
             })
-        })
 
-        //横幅
+        //2.更新表
+        menu.add(
+            TextData(
+                "📅更新表",
+                fontSize = 18F,
+                fontStyle = Typeface.BOLD,
+                gravity = Gravity.CENTER
+            ).apply {
+                action = CustomDataAction.obtain("更新表", UpdateListLoader())
+            })
+
+        if (menu.isNotEmpty())
+            data.add(GridData(menu, 2))
+
+        //3.横幅
         doc.getElementsByClass("foucs bg").first()?.apply {
             val bannerItems = mutableListOf<BannerData.BannerItemData>()
             for (em in children()) {
@@ -78,7 +102,7 @@ class CustomHomeDataComponent : IHomeDataComponent {
                                 Log.d("添加横幅项", "封面：$bannerImage 链接：$videoUrl")
                                 bannerItems.add(
                                     BannerData.BannerItemData(
-                                        bannerImage, nameEm?.ownText() ?: "", ext.toString(), 8.dp
+                                        bannerImage, nameEm?.ownText() ?: "", ext.toString()
                                     ).apply {
                                         if (!videoUrl.isNullOrBlank())
                                             action = DetailAction.obtain(videoUrl)
@@ -91,12 +115,12 @@ class CustomHomeDataComponent : IHomeDataComponent {
                 }
             }
             if (bannerItems.isNotEmpty())
-                data.add(BannerData(bannerItems).apply {
+                data.add(BannerData(bannerItems, 6.dp).apply {
                     paddingTop = 0
                 })
         }
 
-        //分离推荐
+        //4.各类推荐
         val types = doc.getElementsByClass("firs l").first() ?: return null
         for (em in types.children()) {
             Log.d("元素", em.className())
