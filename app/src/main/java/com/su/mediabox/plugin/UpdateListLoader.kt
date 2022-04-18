@@ -31,9 +31,12 @@ class UpdateListLoader : CustomDataAction.Loader {
             days.add(it.text())
         }
         //当前星期
-        val cal: Calendar = Calendar.getInstance()
-        cal.timeInMillis = System.currentTimeMillis()
-        val w = cal.get(Calendar.DAY_OF_WEEK) - 2
+        val cal: Calendar = Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis()
+        }
+        val w = cal.get(Calendar.DAY_OF_WEEK).let {
+            if (it == Calendar.SUNDAY) 6 else it - 2
+        }
         Log.d("当前星期", "$w ${days[w]}")
         //更新列表元素
         updateList = doc.getElementsByClass("tlist").first()?.children() ?: return null
@@ -59,11 +62,10 @@ class UpdateListLoader : CustomDataAction.Loader {
                                 fontStyle = Typeface.BOLD,
                                 fontColor = Color.BLACK
                             ).apply {
-                                paddingTop = 24.dp
-                                paddingLeft = 16.dp
-                                paddingRight = 16.dp
-                                paddingBottom = 0
-
+                                paddingTop = 12.dp
+                                paddingBottom = 0.dp
+                                paddingLeft = 8.dp
+                                paddingRight = 8.dp
                                 action = DetailAction.obtain(url)
                             })
                     }
@@ -76,6 +78,12 @@ class UpdateListLoader : CustomDataAction.Loader {
             repeat(7) {
                 add(updateLoader)
             }
-        }, w))
+        }, w).apply {
+            layoutConfig = BaseData.LayoutConfig(
+                itemSpacing = 0,
+                listLeftEdge = 0,
+                listRightEdge = 0
+            )
+        })
     }
 }

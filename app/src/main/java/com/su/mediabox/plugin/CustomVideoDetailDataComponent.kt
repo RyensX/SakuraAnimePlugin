@@ -131,7 +131,7 @@ class CustomVideoDetailDataComponent : IVideoDetailDataComponent {
                                                 fontColor = Color.WHITE,
                                             )
                                         )
-                                        details.add(GridData(series))
+                                        details.addAll(series)
                                     }
                                 }
                             }
@@ -141,7 +141,14 @@ class CustomVideoDetailDataComponent : IVideoDetailDataComponent {
             }
         }
         return Triple(cover, title, mutableListOf<BaseData>().apply {
-            add(VideoCover1Data(cover, score = score))
+            add(VideoCover1Data(cover, score = score).apply {
+                layoutConfig =
+                    BaseData.LayoutConfig(
+                        itemSpacing = 12.dp,
+                        listLeftEdge = 12.dp,
+                        listRightEdge = 12.dp
+                    )
+            })
             add(
                 TextData(
                     title,
@@ -156,9 +163,7 @@ class CustomVideoDetailDataComponent : IVideoDetailDataComponent {
                 LongTextData(
                     desc.addDouBanSearch(title),
                     fontColor = Color.WHITE
-                ).apply {
-                    paddingTop = 16.dp
-                }
+                )
             )
             addAll(details)
         })

@@ -229,10 +229,10 @@ object ParseHtmlUtil {
                 "${animeShowList.size + 1}. $title", fontStyle = Typeface.BOLD,
                 fontColor = Color.BLACK
             ).apply {
-                paddingTop = 24.dp
-                paddingLeft = 16.dp
-                paddingRight = 16.dp
-                paddingBottom = 0
+                paddingTop = 12.dp
+                paddingBottom = 0.dp
+                paddingLeft = 8.dp
+                paddingRight = 8.dp
                 action = DetailAction.obtain(url)
             })
         }

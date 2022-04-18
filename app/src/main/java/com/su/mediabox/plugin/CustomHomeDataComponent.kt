@@ -3,10 +3,7 @@ package com.su.mediabox.plugin
 import android.graphics.Typeface
 import android.util.Log
 import android.view.Gravity
-import com.su.mediabox.pluginapi.Constant
 import com.su.mediabox.pluginapi.UI.dp
-import com.su.mediabox.pluginapi.been.AnimeShowBean
-import com.su.mediabox.pluginapi.been.TabBean
 import com.su.mediabox.pluginapi.v2.action.CustomDataAction
 import com.su.mediabox.pluginapi.v2.action.DetailAction
 import com.su.mediabox.pluginapi.v2.been.*
@@ -23,7 +20,6 @@ class CustomHomeDataComponent : IHomeDataComponent {
         val doc = JsoupUtil.getDocument(url)
         val data = mutableListOf<BaseData>()
 
-        val menu = mutableListOf<BaseData>()
         //1.排行榜，包含两项
         //一周排行榜
         val weekRank =
@@ -49,37 +45,44 @@ class CustomHomeDataComponent : IHomeDataComponent {
                 return getTotalRankData()
             }
         }
-        menu.add(
+        data.add(
             TextData(
                 "🏅排行榜",
-                fontSize = 18F,
+                fontSize = 16F,
                 fontStyle = Typeface.BOLD,
                 gravity = Gravity.CENTER
             ).apply {
-                paddingTop = 16.dp
-                paddingBottom = 14.dp
+                spanSize = 4
+                paddingTop = 4.dp
+                paddingBottom = 4.dp
                 action = CustomDataAction.obtain("排行榜", object : CustomDataAction.Loader {
                     override suspend fun loadData(page: Int): List<BaseData>? {
                         if (page != 1)
                             return null
-                        return listOf(ViewPagerData(mutableListOf(weekRank!!, totalRank)))
+                        return listOf(ViewPagerData(mutableListOf(weekRank!!, totalRank)).apply {
+                            layoutConfig = BaseData.LayoutConfig(
+                                itemSpacing = 0,
+                                listLeftEdge = 0,
+                                listRightEdge = 0
+                            )
+                        })
                     }
                 })
             })
 
         //2.更新表
-        menu.add(
+        data.add(
             TextData(
                 "📅更新表",
-                fontSize = 18F,
+                fontSize = 16F,
                 fontStyle = Typeface.BOLD,
                 gravity = Gravity.CENTER
             ).apply {
+                spanSize = 4
+                paddingTop = 4.dp
+                paddingBottom = 4.dp
                 action = CustomDataAction.obtain("更新表", UpdateListLoader())
             })
-
-        if (menu.isNotEmpty())
-            data.add(GridData(menu, 2))
 
         //3.横幅
         doc.getElementsByClass("foucs bg").first()?.apply {
@@ -117,6 +120,7 @@ class CustomHomeDataComponent : IHomeDataComponent {
             if (bannerItems.isNotEmpty())
                 data.add(BannerData(bannerItems, 6.dp).apply {
                     paddingTop = 0
+                    paddingBottom = 6.dp
                 })
         }
 
@@ -135,7 +139,6 @@ class CustomHomeDataComponent : IHomeDataComponent {
                 }
                 //分类下的视频
                 "img" -> {
-                    val typeVideos = mutableListOf<VideoGridItemData>()
                     for (video in em.select("li")) {
                         video.getElementsByClass("tname").first()?.select("a")?.first()?.apply {
                             val name = text()
@@ -144,18 +147,13 @@ class CustomHomeDataComponent : IHomeDataComponent {
                             val episode = video.select("[target]").first()?.text()
 
                             if (!name.isNullOrBlank() && !videoUrl.isNullOrBlank() && !coverUrl.isNullOrBlank()) {
-                                typeVideos
-                                    .add(VideoGridItemData(name, coverUrl, videoUrl, episode ?: "")
-                                        .apply {
-                                            action = DetailAction.obtain(videoUrl)
-                                        })
+                                data.add(VideoGridItemData(name, coverUrl, videoUrl, episode ?: "")
+                                    .apply {
+                                        action = DetailAction.obtain(videoUrl)
+                                    })
                                 Log.d("添加视频", "($name) ($videoUrl) ($coverUrl) ($episode)")
                             }
                         }
-                    }
-                    if (!typeVideos.isNullOrEmpty()) {
-                        data.add(GridData(typeVideos))
-                        Log.d("视频数量", "${typeVideos.size}")
                     }
                 }
             }
