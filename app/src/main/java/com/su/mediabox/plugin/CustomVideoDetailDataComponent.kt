@@ -101,12 +101,13 @@ class CustomVideoDetailDataComponent : IVideoDetailDataComponent {
                                 }
                                 "tabs", "tabs noshow" -> {     //播放列表+header
                                     details.add(
-                                        TextData(
+                                        SimpleTextData(
                                             fireLChildren[k].select("[class=menu0]")
-                                                .select("li").text() + "($upState)",
-                                            fontSize = 16F,
-                                            fontColor = Color.WHITE,
-                                        )
+                                                .select("li").text() + "($upState)"
+                                        ).apply {
+                                            fontSize = 16F
+                                            fontColor = Color.WHITE
+                                        }
                                     )
 
                                     details.add(
@@ -125,11 +126,10 @@ class CustomVideoDetailDataComponent : IVideoDetailDataComponent {
                                     val series = parseSeries(fireLChildren[k])
                                     if (series.isNotEmpty()) {
                                         details.add(
-                                            TextData(
-                                                "系列作品",
-                                                fontSize = 16F,
-                                                fontColor = Color.WHITE,
-                                            )
+                                            SimpleTextData("系列作品").apply {
+                                                fontSize = 16F
+                                                fontColor = Color.WHITE
+                                            }
                                         )
                                         details.addAll(series)
                                     }
@@ -150,20 +150,18 @@ class CustomVideoDetailDataComponent : IVideoDetailDataComponent {
                     )
             })
             add(
-                TextData(
-                    title,
-                    fontColor = Color.WHITE,
-                    fontSize = 20F,
-                    gravity = Gravity.CENTER,
+                SimpleTextData(title).apply {
+                    fontColor = Color.WHITE
+                    fontSize = 20F
+                    gravity = Gravity.CENTER
                     fontStyle = 1
-                )
+                }
             )
             add(TagFlowData(tags))
             add(
-                LongTextData(
-                    desc.addDouBanSearch(title),
+                LongTextData(desc.addDouBanSearch(title)).apply {
                     fontColor = Color.WHITE
-                )
+                }
             )
             addAll(details)
         })

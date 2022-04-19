@@ -1,5 +1,6 @@
 package com.su.mediabox.plugin
 
+import android.graphics.Color
 import android.graphics.Typeface
 import android.util.Log
 import android.view.Gravity
@@ -38,7 +39,7 @@ class CustomHomeDataComponent : IHomeDataComponent {
         //动漫排行榜
         val totalRank = object : ViewPagerData.PageLoader {
             override fun pageName(page: Int): String {
-                return "动漫排行榜"
+                return "总排行"
             }
 
             override suspend fun loadData(page: Int): List<BaseData> {
@@ -46,13 +47,11 @@ class CustomHomeDataComponent : IHomeDataComponent {
             }
         }
         data.add(
-            TextData(
-                "🏅排行榜",
-                fontSize = 16F,
-                fontStyle = Typeface.BOLD,
-                gravity = Gravity.CENTER
-            ).apply {
+            SimpleTextData("🏅排行榜").apply {
                 spanSize = 4
+                fontSize = 16F
+                fontStyle = Typeface.BOLD
+                gravity = Gravity.CENTER
                 paddingTop = 4.dp
                 paddingBottom = 4.dp
                 action = CustomDataAction.obtain("排行榜", object : CustomDataAction.Loader {
@@ -72,13 +71,11 @@ class CustomHomeDataComponent : IHomeDataComponent {
 
         //2.更新表
         data.add(
-            TextData(
-                "📅更新表",
-                fontSize = 16F,
-                fontStyle = Typeface.BOLD,
-                gravity = Gravity.CENTER
-            ).apply {
+            SimpleTextData("📅更新表").apply {
                 spanSize = 4
+                fontSize = 16F
+                fontStyle = Typeface.BOLD
+                gravity = Gravity.CENTER
                 paddingTop = 4.dp
                 paddingBottom = 4.dp
                 action = CustomDataAction.obtain("更新表", UpdateListLoader())
@@ -133,7 +130,10 @@ class CustomHomeDataComponent : IHomeDataComponent {
                 "dtit" -> {
                     val typeName = em.select("h2").text()
                     if (!typeName.isNullOrBlank()) {
-                        data.add(TextData(typeName, fontSize = 18F, fontStyle = Typeface.BOLD))
+                        data.add(SimpleTextData(typeName).apply {
+                            fontSize = 18F
+                            fontStyle = Typeface.BOLD
+                        })
                         Log.d("视频分类", typeName)
                     }
                 }
@@ -162,11 +162,17 @@ class CustomHomeDataComponent : IHomeDataComponent {
         return data
     }
 
+    private val rankTop3Color = intArrayOf(
+        Color.parseColor("#E4CD01"),
+        Color.parseColor("#9E9E9E"),
+        Color.parseColor("#B77231")
+    )
+
     private suspend fun getTotalRankData(): List<BaseData> {
         val const = CustomConst
         val document = JsoupUtil.getDocument(const.host + const.ANIME_RANK)
         val areaChildren: Elements = document.select("[class=area]")[0].children()
-        val rankList = mutableListOf<BaseData>()
+        val rankList = mutableListOf<SimpleTextData>()
         for (i in areaChildren.indices) {
             when (areaChildren[i].className()) {
                 "topli" -> {
@@ -174,6 +180,25 @@ class CustomHomeDataComponent : IHomeDataComponent {
                 }
             }
         }
-        return rankList
+        val rankViewList = mutableListOf<BaseData>()
+        rankList.forEachIndexed { index, rank ->
+            rankViewList.add(TagData("${index + 1}", rankTop3Color.getOrNull(index)).apply {
+                spanSize = 1
+                paddingLeft = 6.dp
+            })
+            rankViewList.add(rank.apply {
+                spanSize = 7
+                gravity = Gravity.CENTER_VERTICAL
+                fontStyle = Typeface.BOLD
+                fontColor = Color.BLACK
+
+                paddingTop = 6.dp
+                paddingBottom = 6.dp
+                paddingLeft = 0.dp
+                paddingRight = 0.dp
+            })
+        }
+        //  rankViewList[0].layoutConfig = BaseData.LayoutConfig(listLeftEdge = 14.dp)
+        return rankViewList
     }
 }

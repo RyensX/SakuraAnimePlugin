@@ -197,8 +197,8 @@ object ParseHtmlUtil {
 
     fun parseTopli(
         element: Element
-    ): List<BaseData> {
-        val animeShowList = mutableListOf<BaseData>()
+    ): List<SimpleTextData> {
+        val animeShowList = mutableListOf<SimpleTextData>()
         val elements: Elements = element.select("ul").select("li")
         for (i in elements.indices) {
             var url: String
@@ -225,14 +225,7 @@ object ParseHtmlUtil {
             if (episodeUrl == "") {
                 episodeUrl = url
             }
-            animeShowList.add(TextData(
-                "${animeShowList.size + 1}. $title", fontStyle = Typeface.BOLD,
-                fontColor = Color.BLACK
-            ).apply {
-                paddingTop = 12.dp
-                paddingBottom = 0.dp
-                paddingLeft = 8.dp
-                paddingRight = 8.dp
+            animeShowList.add(SimpleTextData(title).apply {
                 action = DetailAction.obtain(url)
             })
         }

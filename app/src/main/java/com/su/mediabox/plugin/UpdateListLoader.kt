@@ -3,12 +3,11 @@ package com.su.mediabox.plugin
 import android.graphics.Color
 import android.graphics.Typeface
 import android.util.Log
+import android.view.Gravity
 import com.su.mediabox.pluginapi.UI.dp
 import com.su.mediabox.pluginapi.v2.action.CustomDataAction
 import com.su.mediabox.pluginapi.v2.action.DetailAction
-import com.su.mediabox.pluginapi.v2.been.BaseData
-import com.su.mediabox.pluginapi.v2.been.TextData
-import com.su.mediabox.pluginapi.v2.been.ViewPagerData
+import com.su.mediabox.pluginapi.v2.been.*
 import org.jsoup.select.Elements
 import java.util.*
 
@@ -49,25 +48,38 @@ class UpdateListLoader : CustomDataAction.Loader {
                 //ul元素
                 val target = updateList[page]
                 val ups = mutableListOf<TextData>()
+                var index = 0
                 for (em in target.children()) {
+                    index++
                     val titleEm = em.select("[title]").first()
                     val title = titleEm?.text()
                     val episode = em.select("[target=_blank]").first()?.text()
                     val url = titleEm?.attr("href")
                     if (!title.isNullOrBlank() && !episode.isNullOrBlank() && !url.isNullOrBlank()) {
                         Log.d("添加更新", "$title $episode $url")
+                        ups.add(TagData("$index").apply {
+                            spanSize = 1
+                            paddingLeft = 6.dp
+                        })
+
                         ups.add(
-                            TextData(
-                                "${ups.size + 1}. $title $episode",
-                                fontStyle = Typeface.BOLD,
+                            SimpleTextData(title).apply {
+                                spanSize = 5
+                                fontStyle = Typeface.BOLD
                                 fontColor = Color.BLACK
-                            ).apply {
-                                paddingTop = 12.dp
-                                paddingBottom = 0.dp
-                                paddingLeft = 8.dp
-                                paddingRight = 8.dp
+                                paddingTop = 6.dp
+                                paddingBottom = 6.dp
+                                paddingLeft = 0.dp
+                                paddingRight = 0.dp
                                 action = DetailAction.obtain(url)
                             })
+
+                        ups.add(SimpleTextData(episode).apply {
+                            spanSize = 2
+                            fontStyle = Typeface.BOLD
+                            paddingRight = 6.dp
+                            gravity = Gravity.RIGHT or Gravity.CENTER_VERTICAL
+                        })
                     }
                 }
                 return ups
