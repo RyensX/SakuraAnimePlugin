@@ -17,13 +17,19 @@
         android:theme="@style/Theme.MediaBoxPluginSample"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
+
+        <!--必须标记组件工厂实现的完整包-->
+        <meta-data
+            android:name="media_plugin_api_impl"
+            android:value="com.su.mediabox.plugin.ComponentFactory" />
+
         <activity
             android:name=".OtherActivity"
             android:exported="true"
             android:label="关于">
             <intent-filter>
-                <!--这个Action只能标一次，一般可以标记在写关于信息的Activity上-->
-                <action android:name="media_box_plugin_action" />
+                <!--方便调试-->
+                <action android:name="media_plugin_debug" />
             </intent-filter>
         </activity>
         <activity

@@ -1,6 +1,7 @@
 package com.su.sakuraanimeplugin
 
 import android.annotation.SuppressLint
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.su.mediabox.plugin.ComponentFactory
@@ -18,7 +19,12 @@ class OtherActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.root.text = """
-            插件API版本：${ComponentFactory().apiVersion}
+            插件API版本：${
+            packageManager.getApplicationInfo(
+                packageName,
+                PackageManager.GET_META_DATA
+            ).metaData?.getInt("media_plugin_api_version", -1)
+        }
             数据源地址： ${CustomConst.host}
             开源地址：https://github.com/RyensX/SakuraAnimePlugin
             
