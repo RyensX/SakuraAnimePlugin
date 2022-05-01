@@ -1,15 +1,13 @@
 package com.su.mediabox.plugin
 
-import android.graphics.Color
 import android.graphics.Typeface
 import android.util.Log
 import android.view.Gravity
 import com.su.mediabox.pluginapi.UI.dp
-import com.su.mediabox.pluginapi.v2.action.CustomDataAction
+import com.su.mediabox.pluginapi.v2.action.CustomPageAction
 import com.su.mediabox.pluginapi.v2.action.DetailAction
 import com.su.mediabox.pluginapi.v2.been.*
 import com.su.mediabox.pluginapi.v2.components.IHomeDataComponent
-import org.jsoup.select.Elements
 import java.lang.StringBuilder
 
 class CustomHomeDataComponent : IHomeDataComponent {
@@ -21,31 +19,7 @@ class CustomHomeDataComponent : IHomeDataComponent {
         val doc = JsoupUtil.getDocument(url)
         val data = mutableListOf<BaseData>()
 
-        //1.排行榜，包含两项
-        //一周排行榜
-        val weekRank =
-            doc.getElementsByClass("pics")
-                .first()?.let {
-                    object : ViewPagerData.PageLoader {
-                        override fun pageName(page: Int): String {
-                            return "一周排行"
-                        }
-
-                        override suspend fun loadData(page: Int): List<BaseData> {
-                            return ParseHtmlUtil.parseSearchEm(it, url)
-                        }
-                    }
-                }
-        //动漫排行榜
-        val totalRank = object : ViewPagerData.PageLoader {
-            override fun pageName(page: Int): String {
-                return "总排行"
-            }
-
-            override suspend fun loadData(page: Int): List<BaseData> {
-                return getTotalRankData()
-            }
-        }
+        //1.排行榜
         data.add(
             SimpleTextData("🏅排行榜").apply {
                 spanSize = 4
@@ -54,19 +28,7 @@ class CustomHomeDataComponent : IHomeDataComponent {
                 gravity = Gravity.CENTER
                 paddingTop = 4.dp
                 paddingBottom = 4.dp
-                action = CustomDataAction.obtain("排行榜", object : CustomDataAction.Loader {
-                    override suspend fun loadData(page: Int): List<BaseData>? {
-                        if (page != 1)
-                            return null
-                        return listOf(ViewPagerData(mutableListOf(weekRank!!, totalRank)).apply {
-                            layoutConfig = BaseData.LayoutConfig(
-                                itemSpacing = 0,
-                                listLeftEdge = 0,
-                                listRightEdge = 0
-                            )
-                        })
-                    }
-                })
+                action = CustomPageAction.obtain(RankPageDataComponent::class.java)
             })
 
         //2.更新表
@@ -78,7 +40,7 @@ class CustomHomeDataComponent : IHomeDataComponent {
                 gravity = Gravity.CENTER
                 paddingTop = 4.dp
                 paddingBottom = 4.dp
-                action = CustomDataAction.obtain("更新表", UpdateListLoader())
+                action = CustomPageAction.obtain(UpdateTablePageDataComponent::class.java)
             })
 
         //3.横幅
@@ -160,45 +122,5 @@ class CustomHomeDataComponent : IHomeDataComponent {
         }
 
         return data
-    }
-
-    private val rankTop3Color = intArrayOf(
-        Color.parseColor("#E4CD01"),
-        Color.parseColor("#9E9E9E"),
-        Color.parseColor("#B77231")
-    )
-
-    private suspend fun getTotalRankData(): List<BaseData> {
-        val const = CustomConst
-        val document = JsoupUtil.getDocument(const.host + const.ANIME_RANK)
-        val areaChildren: Elements = document.select("[class=area]")[0].children()
-        val rankList = mutableListOf<SimpleTextData>()
-        for (i in areaChildren.indices) {
-            when (areaChildren[i].className()) {
-                "topli" -> {
-                    rankList.addAll(ParseHtmlUtil.parseTopli(areaChildren[i]))
-                }
-            }
-        }
-        val rankViewList = mutableListOf<BaseData>()
-        rankList.forEachIndexed { index, rank ->
-            rankViewList.add(TagData("${index + 1}", rankTop3Color.getOrNull(index)).apply {
-                spanSize = 1
-                paddingLeft = 6.dp
-            })
-            rankViewList.add(rank.apply {
-                spanSize = 7
-                gravity = Gravity.CENTER_VERTICAL
-                fontStyle = Typeface.BOLD
-                fontColor = Color.BLACK
-
-                paddingTop = 6.dp
-                paddingBottom = 6.dp
-                paddingLeft = 0.dp
-                paddingRight = 0.dp
-            })
-        }
-        //  rankViewList[0].layoutConfig = BaseData.LayoutConfig(listLeftEdge = 14.dp)
-        return rankViewList
     }
 }

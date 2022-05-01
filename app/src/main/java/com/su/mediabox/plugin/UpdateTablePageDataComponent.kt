@@ -5,18 +5,22 @@ import android.graphics.Typeface
 import android.util.Log
 import android.view.Gravity
 import com.su.mediabox.pluginapi.UI.dp
-import com.su.mediabox.pluginapi.v2.action.CustomDataAction
+import com.su.mediabox.pluginapi.v2.action.Action
 import com.su.mediabox.pluginapi.v2.action.DetailAction
 import com.su.mediabox.pluginapi.v2.been.*
+import com.su.mediabox.pluginapi.v2.components.ICustomPageComponent
 import org.jsoup.select.Elements
 import java.util.*
 
-class UpdateListLoader : CustomDataAction.Loader {
+class UpdateTablePageDataComponent : ICustomPageComponent {
+
+    override val pageName = "更新表"
+    override fun isShowBack() = false
 
     private val days = mutableListOf<String>()
     private lateinit var updateList: Elements
 
-    override suspend fun loadData(page: Int): List<BaseData>? {
+    override suspend fun getData(page: Int): List<BaseData>? {
         Log.d("抓取更新数据", "page=$page")
         if (page != 1)
             return null

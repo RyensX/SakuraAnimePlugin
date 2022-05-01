@@ -25,6 +25,9 @@ class ComponentFactory : IComponentFactory() {
         IVideoDetailDataComponent::class.java -> CustomVideoDetailDataComponent()
         IMediaClassifyDataComponent::class.java -> CustomMediaClassifyDataComponent()
         IHomeDataComponent::class.java -> CustomHomeDataComponent()
+        //自定义页面，需要使用具体类而不是它的基类（接口）
+        RankPageDataComponent::class.java -> RankPageDataComponent()
+        UpdateTablePageDataComponent::class.java -> UpdateTablePageDataComponent()
         else -> null
     } as? T
 
