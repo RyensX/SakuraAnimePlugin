@@ -4,8 +4,7 @@ import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.su.mediabox.plugin.ComponentFactory
-import com.su.mediabox.plugin.CustomConst
+import com.su.sakuraanimeplugin.plugin.components.CustomConst
 import com.su.sakuraanimeplugin.databinding.ActivityOtherBinding
 
 class OtherActivity : AppCompatActivity() {

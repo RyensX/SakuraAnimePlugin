@@ -1,17 +1,15 @@
-package com.su.mediabox.plugin
+package com.su.sakuraanimeplugin.plugin.util
 
-import android.graphics.Color
-import android.graphics.Typeface
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 import java.util.ArrayList
 import com.su.mediabox.pluginapi.Constant
 import com.su.mediabox.pluginapi.Text.buildRouteActionUrl
-import com.su.mediabox.pluginapi.UI.dp
 import com.su.mediabox.pluginapi.been.*
 import com.su.mediabox.pluginapi.v2.action.ClassifyAction
 import com.su.mediabox.pluginapi.v2.action.DetailAction
 import com.su.mediabox.pluginapi.v2.been.*
+import com.su.sakuraanimeplugin.plugin.components.CustomConst
 import java.net.URL
 
 object ParseHtmlUtil {

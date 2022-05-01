@@ -1,7 +1,8 @@
-package com.su.mediabox.plugin
+package com.su.sakuraanimeplugin.plugin.components
 
 import com.su.mediabox.pluginapi.v2.been.VideoPlayMedia
 import com.su.mediabox.pluginapi.v2.components.IVideoPlayComponent
+import com.su.sakuraanimeplugin.plugin.util.JsoupUtil
 import org.jsoup.nodes.Element
 
 class CustomVideoPlayComponent : IVideoPlayComponent {

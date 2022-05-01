@@ -1,4 +1,4 @@
-package com.su.mediabox.plugin
+package com.su.sakuraanimeplugin.plugin.components
 
 import android.graphics.Color
 import android.view.Gravity
@@ -9,6 +9,7 @@ import com.su.mediabox.pluginapi.v2.action.DetailAction
 import com.su.mediabox.pluginapi.v2.action.PlayAction
 import com.su.mediabox.pluginapi.v2.been.*
 import com.su.mediabox.pluginapi.v2.components.IVideoDetailDataComponent
+import com.su.sakuraanimeplugin.plugin.util.JsoupUtil
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 

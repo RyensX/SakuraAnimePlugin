@@ -1,9 +1,11 @@
-package com.su.mediabox.plugin
+package com.su.sakuraanimeplugin.plugin.components
 
 import com.su.mediabox.pluginapi.v2.action.ClassifyAction
 import com.su.mediabox.pluginapi.v2.been.BaseData
 import com.su.mediabox.pluginapi.v2.been.ClassifyItemData
 import com.su.mediabox.pluginapi.v2.components.IMediaClassifyDataComponent
+import com.su.sakuraanimeplugin.plugin.util.JsoupUtil
+import com.su.sakuraanimeplugin.plugin.util.ParseHtmlUtil
 import org.jsoup.select.Elements
 
 class CustomMediaClassifyDataComponent : IMediaClassifyDataComponent {

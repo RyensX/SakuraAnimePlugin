@@ -1,8 +1,10 @@
-package com.su.mediabox.plugin
+package com.su.sakuraanimeplugin.plugin.components
 
 import android.net.Uri
 import com.su.mediabox.pluginapi.v2.been.BaseData
 import com.su.mediabox.pluginapi.v2.components.IVideoSearchDataComponent
+import com.su.sakuraanimeplugin.plugin.util.JsoupUtil
+import com.su.sakuraanimeplugin.plugin.util.ParseHtmlUtil
 import org.jsoup.select.Elements
 
 class CustomVideoSearchDataComponent : IVideoSearchDataComponent {
@@ -11,7 +13,7 @@ class CustomVideoSearchDataComponent : IVideoSearchDataComponent {
         val const = CustomConst
         val searchResultList = mutableListOf<BaseData>()
         val url =
-            "${const.host}${const.ANIME_SEARCH}${Uri.encode(keyWord, ":/-![].,%?&=")}/$page"
+            "${CustomConst.host}${CustomConst.ANIME_SEARCH}${Uri.encode(keyWord, ":/-![].,%?&=")}/$page"
         val document = JsoupUtil.getDocument(url)
         val lpic: Elements = document.getElementsByClass("area")
             .select("[class=fire l]").select("[class=lpic]")

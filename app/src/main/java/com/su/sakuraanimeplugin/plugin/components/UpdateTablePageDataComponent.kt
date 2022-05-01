@@ -1,14 +1,14 @@
-package com.su.mediabox.plugin
+package com.su.sakuraanimeplugin.plugin.components
 
 import android.graphics.Color
 import android.graphics.Typeface
 import android.util.Log
 import android.view.Gravity
 import com.su.mediabox.pluginapi.UI.dp
-import com.su.mediabox.pluginapi.v2.action.Action
 import com.su.mediabox.pluginapi.v2.action.DetailAction
 import com.su.mediabox.pluginapi.v2.been.*
 import com.su.mediabox.pluginapi.v2.components.ICustomPageComponent
+import com.su.sakuraanimeplugin.plugin.util.JsoupUtil
 import org.jsoup.select.Elements
 import java.util.*
 

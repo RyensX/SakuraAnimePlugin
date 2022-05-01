@@ -1,7 +1,10 @@
-package com.su.mediabox.plugin
+package com.su.sakuraanimeplugin.plugin.deprecateds
 
 import com.su.mediabox.pluginapi.been.TabBean
 import com.su.mediabox.pluginapi.components.IRankComponent
+import com.su.sakuraanimeplugin.plugin.components.CustomConst
+import com.su.sakuraanimeplugin.plugin.util.JsoupUtil
+import com.su.sakuraanimeplugin.plugin.util.ParseHtmlUtil
 import org.jsoup.select.Elements
 
 @Deprecated("将在下一个Release重新整理实现")
@@ -18,7 +21,7 @@ class CustomRankModel : IRankComponent {
 
     private suspend fun getAllRankData() {
         val const = CustomConst
-        val document = JsoupUtil.getDocument(const.host + const.ANIME_RANK)
+        val document = JsoupUtil.getDocument(CustomConst.host + CustomConst.ANIME_RANK)
         val areaChildren: Elements = document.select("[class=area]")[0].children()
         for (i in areaChildren.indices) {
             when (areaChildren[i].className()) {
@@ -26,7 +29,7 @@ class CustomRankModel : IRankComponent {
                     tabList.add(
                         tabList.size, TabBean(
                             "",
-                            const.ANIME_RANK,
+                            CustomConst.ANIME_RANK,
                             "",
                             areaChildren[i].select("h1").select("a").text()
                         )

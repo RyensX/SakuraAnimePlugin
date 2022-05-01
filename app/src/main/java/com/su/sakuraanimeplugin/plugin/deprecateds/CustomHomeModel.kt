@@ -1,7 +1,9 @@
-package com.su.mediabox.plugin
+package com.su.sakuraanimeplugin.plugin.deprecateds
 
 import com.su.mediabox.pluginapi.been.TabBean
 import com.su.mediabox.pluginapi.components.IHomeComponent
+import com.su.sakuraanimeplugin.plugin.components.CustomConst
+import com.su.sakuraanimeplugin.plugin.util.JsoupUtil
 import org.jsoup.select.Elements
 
 @Deprecated("将在下一个Release重新整理实现")

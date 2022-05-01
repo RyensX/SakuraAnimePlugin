@@ -1,4 +1,4 @@
-package com.su.mediabox.plugin
+package com.su.sakuraanimeplugin.plugin.deprecateds
 
 import com.su.mediabox.pluginapi.Constant
 import com.su.mediabox.pluginapi.Text
@@ -6,6 +6,9 @@ import com.su.mediabox.pluginapi.been.AnimeShowBean
 import com.su.mediabox.pluginapi.been.IAnimeShowBean
 import com.su.mediabox.pluginapi.been.PageNumberBean
 import com.su.mediabox.pluginapi.components.IAnimeShowComponent
+import com.su.sakuraanimeplugin.plugin.components.CustomConst
+import com.su.sakuraanimeplugin.plugin.util.JsoupUtil
+import com.su.sakuraanimeplugin.plugin.util.ParseHtmlUtil
 import org.jsoup.select.Elements
 
 @Deprecated("将在下一个Release重新整理实现")

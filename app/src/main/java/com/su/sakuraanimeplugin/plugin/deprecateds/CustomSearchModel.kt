@@ -1,9 +1,12 @@
-package com.su.mediabox.plugin
+package com.su.sakuraanimeplugin.plugin.deprecateds
 
 import android.net.Uri
 import com.su.mediabox.pluginapi.been.AnimeCoverBean
 import com.su.mediabox.pluginapi.been.PageNumberBean
 import com.su.mediabox.pluginapi.components.ISearchComponent
+import com.su.sakuraanimeplugin.plugin.components.CustomConst
+import com.su.sakuraanimeplugin.plugin.util.JsoupUtil
+import com.su.sakuraanimeplugin.plugin.util.ParseHtmlUtil
 import org.jsoup.select.Elements
 
 @Deprecated("将在下一个Release重新整理实现")
@@ -16,7 +19,7 @@ class CustomSearchModel : ISearchComponent {
         var pageNumberBean: PageNumberBean? = null
         val searchResultList: ArrayList<AnimeCoverBean> = ArrayList()
         val url =
-            "${const.host}${const.ANIME_SEARCH}${Uri.encode(keyWord, ":/-![].,%?&=")}/$partUrl"
+            "${CustomConst.host}${CustomConst.ANIME_SEARCH}${Uri.encode(keyWord, ":/-![].,%?&=")}/$partUrl"
         val document = JsoupUtil.getDocument(url)
         val lpic: Elements = document.getElementsByClass("area")
             .select("[class=fire l]").select("[class=lpic]")

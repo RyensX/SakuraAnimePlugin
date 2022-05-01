@@ -1,4 +1,4 @@
-package com.su.mediabox.plugin
+package com.su.sakuraanimeplugin.plugin.components
 
 import com.su.mediabox.pluginapi.components.IConstComponent
 

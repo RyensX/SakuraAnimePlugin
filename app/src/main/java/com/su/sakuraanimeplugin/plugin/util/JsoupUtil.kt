@@ -1,4 +1,4 @@
-package com.su.mediabox.plugin
+package com.su.sakuraanimeplugin.plugin.util
 import com.su.mediabox.pluginapi.Constant
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document

@@ -1,9 +1,10 @@
-package com.su.mediabox.plugin
+package com.su.sakuraanimeplugin.plugin.actions
 
 import android.content.Context
 import android.widget.Toast
 import com.su.mediabox.pluginapi.v2.action.Action
 import com.su.mediabox.pluginapi.v2.action.WebBrowserAction
+import com.su.sakuraanimeplugin.plugin.components.CustomConst
 
 /**
  * 注意不能使用匿名类自定义action

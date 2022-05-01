@@ -1,8 +1,10 @@
-package com.su.mediabox.plugin
+package com.su.sakuraanimeplugin.plugin
 
 import com.su.mediabox.pluginapi.components.*
 import com.su.mediabox.pluginapi.IComponentFactory
 import com.su.mediabox.pluginapi.v2.components.*
+import com.su.sakuraanimeplugin.plugin.components.*
+import com.su.sakuraanimeplugin.plugin.deprecateds.*
 
 /**
  * 每个插件必须实现本类

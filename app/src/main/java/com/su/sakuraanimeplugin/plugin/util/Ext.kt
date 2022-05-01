@@ -1,4 +1,4 @@
-package com.su.mediabox.customdatasourcesample1
+package com.su.sakuraanimeplugin.plugin.util
 
 import java.util.regex.Pattern
 

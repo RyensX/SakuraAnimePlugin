@@ -1,8 +1,11 @@
-package com.su.mediabox.plugin
+package com.su.sakuraanimeplugin.plugin.deprecateds
 
 import com.su.mediabox.pluginapi.Constant
 import com.su.mediabox.pluginapi.been.*
 import com.su.mediabox.pluginapi.components.IPlayComponent
+import com.su.sakuraanimeplugin.plugin.components.CustomConst
+import com.su.sakuraanimeplugin.plugin.util.JsoupUtil
+import com.su.sakuraanimeplugin.plugin.util.ParseHtmlUtil
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 

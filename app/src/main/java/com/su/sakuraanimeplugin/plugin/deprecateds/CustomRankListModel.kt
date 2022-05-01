@@ -1,8 +1,11 @@
-package com.su.mediabox.plugin
+package com.su.sakuraanimeplugin.plugin.deprecateds
 
 import com.su.mediabox.pluginapi.been.AnimeCoverBean
 import com.su.mediabox.pluginapi.been.PageNumberBean
 import com.su.mediabox.pluginapi.components.IRankListComponent
+import com.su.sakuraanimeplugin.plugin.components.CustomConst
+import com.su.sakuraanimeplugin.plugin.util.JsoupUtil
+import com.su.sakuraanimeplugin.plugin.util.ParseHtmlUtil
 import org.jsoup.select.Elements
 
 @Deprecated("将在下一个Release重新整理实现")
@@ -19,12 +22,12 @@ class CustomRankListModel : IRankListComponent {
 
     private suspend fun getAllRankData(partUrl: String) {
         val const = CustomConst
-        val document = JsoupUtil.getDocument(const.host + const.ANIME_RANK)
+        val document = JsoupUtil.getDocument(CustomConst.host + CustomConst.ANIME_RANK)
         val areaChildren: Elements = document.select("[class=area]")[0].children()
         for (i in areaChildren.indices) {
             when (areaChildren[i].className()) {
                 "topli" -> {
-                    rankList.addAll(ParseHtmlUtil.parseTopli(areaChildren[i],""))
+                    rankList.addAll(ParseHtmlUtil.parseTopli(areaChildren[i], ""))
                 }
             }
         }

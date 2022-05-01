@@ -1,6 +1,5 @@
-package com.su.mediabox.plugin
+package com.su.sakuraanimeplugin.plugin.components
 
-import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.view.Gravity
@@ -10,6 +9,9 @@ import com.su.mediabox.pluginapi.v2.been.SimpleTextData
 import com.su.mediabox.pluginapi.v2.been.TagData
 import com.su.mediabox.pluginapi.v2.been.ViewPagerData
 import com.su.mediabox.pluginapi.v2.components.ICustomPageComponent
+import com.su.sakuraanimeplugin.plugin.actions.CustomAction
+import com.su.sakuraanimeplugin.plugin.util.JsoupUtil
+import com.su.sakuraanimeplugin.plugin.util.ParseHtmlUtil
 import org.jsoup.select.Elements
 
 class RankPageDataComponent : ICustomPageComponent {
@@ -65,7 +67,7 @@ class RankPageDataComponent : ICustomPageComponent {
 
     private suspend fun getTotalRankData(): List<BaseData> {
         val const = CustomConst
-        val document = JsoupUtil.getDocument(const.host + const.ANIME_RANK)
+        val document = JsoupUtil.getDocument(CustomConst.host + CustomConst.ANIME_RANK)
         val areaChildren: Elements = document.select("[class=area]")[0].children()
         val rankList = mutableListOf<SimpleTextData>()
         for (i in areaChildren.indices) {
