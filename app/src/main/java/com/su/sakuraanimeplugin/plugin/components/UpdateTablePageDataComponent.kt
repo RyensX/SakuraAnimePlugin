@@ -4,15 +4,16 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.util.Log
 import android.view.Gravity
-import com.su.mediabox.pluginapi.UI.dp
-import com.su.mediabox.pluginapi.v2.action.DetailAction
-import com.su.mediabox.pluginapi.v2.been.*
-import com.su.mediabox.pluginapi.v2.components.ICustomPageComponent
+import com.su.mediabox.pluginapi.action.DetailAction
+import com.su.mediabox.pluginapi.components.ICustomPageDataComponent
+import com.su.mediabox.pluginapi.data.*
+import com.su.mediabox.pluginapi.util.UIUtil.dp
+import com.su.sakuraanimeplugin.plugin.components.Const.host
 import com.su.sakuraanimeplugin.plugin.util.JsoupUtil
 import org.jsoup.select.Elements
 import java.util.*
 
-class UpdateTablePageDataComponent : ICustomPageComponent {
+class UpdateTablePageDataComponent : ICustomPageDataComponent {
 
     override val pageName = "更新表"
     override fun isShowBack() = false
@@ -24,7 +25,7 @@ class UpdateTablePageDataComponent : ICustomPageComponent {
         Log.d("抓取更新数据", "page=$page")
         if (page != 1)
             return null
-        val doc = JsoupUtil.getDocument(CustomConst.host)
+        val doc = JsoupUtil.getDocument(host)
             .select("[class=side r]").select("[class=bg]")
             .first() ?: return null
         //星期

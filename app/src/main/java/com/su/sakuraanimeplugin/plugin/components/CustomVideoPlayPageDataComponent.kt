@@ -1,11 +1,12 @@
 package com.su.sakuraanimeplugin.plugin.components
 
-import com.su.mediabox.pluginapi.v2.been.VideoPlayMedia
-import com.su.mediabox.pluginapi.v2.components.IVideoPlayComponent
+import com.su.mediabox.pluginapi.components.IVideoPlayPageDataComponent
+import com.su.mediabox.pluginapi.data.VideoPlayMedia
+import com.su.sakuraanimeplugin.plugin.components.Const.host
 import com.su.sakuraanimeplugin.plugin.util.JsoupUtil
 import org.jsoup.nodes.Element
 
-class CustomVideoPlayComponent : IVideoPlayComponent {
+class CustomVideoPlayPageDataComponent : IVideoPlayPageDataComponent {
 
     private suspend fun getVideoRawUrl(e: Element): String {
         val div = e.select("[class=area]").select("[class=bofang]")[0].children()
@@ -30,7 +31,7 @@ class CustomVideoPlayComponent : IVideoPlayComponent {
     override suspend fun getVideoPlayMedia(episodeUrl: String): VideoPlayMedia {
         var name = ""
         var videoUrl = ""
-        val url = CustomConst.host + episodeUrl
+        val url = host + episodeUrl
         val document = JsoupUtil.getDocument(url)
         document.allElements.forEach {
             when (it.className()) {

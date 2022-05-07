@@ -3,18 +3,19 @@ package com.su.sakuraanimeplugin.plugin.components
 import android.graphics.Color
 import android.graphics.Typeface
 import android.view.Gravity
-import com.su.mediabox.pluginapi.UI.dp
-import com.su.mediabox.pluginapi.v2.been.BaseData
-import com.su.mediabox.pluginapi.v2.been.SimpleTextData
-import com.su.mediabox.pluginapi.v2.been.TagData
-import com.su.mediabox.pluginapi.v2.been.ViewPagerData
-import com.su.mediabox.pluginapi.v2.components.ICustomPageComponent
+import com.su.mediabox.pluginapi.components.ICustomPageDataComponent
+import com.su.mediabox.pluginapi.data.BaseData
+import com.su.mediabox.pluginapi.data.SimpleTextData
+import com.su.mediabox.pluginapi.data.TagData
+import com.su.mediabox.pluginapi.data.ViewPagerData
+import com.su.mediabox.pluginapi.util.UIUtil.dp
 import com.su.sakuraanimeplugin.plugin.actions.CustomAction
+import com.su.sakuraanimeplugin.plugin.components.Const.host
 import com.su.sakuraanimeplugin.plugin.util.JsoupUtil
 import com.su.sakuraanimeplugin.plugin.util.ParseHtmlUtil
 import org.jsoup.select.Elements
 
-class RankPageDataComponent : ICustomPageComponent {
+class RankPageDataComponent : ICustomPageDataComponent {
 
     override val pageName = "排行榜"
     override fun menus() = mutableListOf(CustomAction())
@@ -22,7 +23,7 @@ class RankPageDataComponent : ICustomPageComponent {
     override suspend fun getData(page: Int): List<BaseData>? {
         if (page != 1)
             return null
-        val url = CustomConst.host
+        val url = host
         val doc = JsoupUtil.getDocument(url)
 
         //排行榜，包含两项
@@ -66,8 +67,7 @@ class RankPageDataComponent : ICustomPageComponent {
     )
 
     private suspend fun getTotalRankData(): List<BaseData> {
-        val const = CustomConst
-        val document = JsoupUtil.getDocument(CustomConst.host + CustomConst.ANIME_RANK)
+        val document = JsoupUtil.getDocument("$host/top/")
         val areaChildren: Elements = document.select("[class=area]")[0].children()
         val rankList = mutableListOf<SimpleTextData>()
         for (i in areaChildren.indices) {

@@ -2,9 +2,9 @@ package com.su.sakuraanimeplugin.plugin.actions
 
 import android.content.Context
 import android.widget.Toast
-import com.su.mediabox.pluginapi.v2.action.Action
-import com.su.mediabox.pluginapi.v2.action.WebBrowserAction
-import com.su.sakuraanimeplugin.plugin.components.CustomConst
+import com.su.mediabox.pluginapi.action.Action
+import com.su.mediabox.pluginapi.action.WebBrowserAction
+import com.su.sakuraanimeplugin.plugin.components.Const
 
 /**
  * 注意不能使用匿名类自定义action
@@ -17,7 +17,7 @@ class CustomAction : Action() {
 
     override fun go(context: Context) {
         Toast.makeText(context, extraData!! as String, Toast.LENGTH_SHORT).show()
-        WebBrowserAction.obtain(CustomConst.host).go(context)
+        WebBrowserAction.obtain(Const.host).go(context)
     }
 
 }

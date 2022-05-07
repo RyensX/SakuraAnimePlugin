@@ -2,18 +2,18 @@ package com.su.sakuraanimeplugin.plugin.components
 
 import android.graphics.Color
 import android.view.Gravity
-import com.su.mediabox.pluginapi.Text.urlEncode
-import com.su.mediabox.pluginapi.UI.dp
-import com.su.mediabox.pluginapi.v2.action.ClassifyAction
-import com.su.mediabox.pluginapi.v2.action.DetailAction
-import com.su.mediabox.pluginapi.v2.action.PlayAction
-import com.su.mediabox.pluginapi.v2.been.*
-import com.su.mediabox.pluginapi.v2.components.IVideoDetailDataComponent
+import com.su.mediabox.pluginapi.components.IMediaDetailPageDataComponent
+import com.su.mediabox.pluginapi.action.ClassifyAction
+import com.su.mediabox.pluginapi.action.DetailAction
+import com.su.mediabox.pluginapi.action.PlayAction
+import com.su.mediabox.pluginapi.data.*
+import com.su.mediabox.pluginapi.util.TextUtil.urlEncode
+import com.su.mediabox.pluginapi.util.UIUtil.dp
 import com.su.sakuraanimeplugin.plugin.util.JsoupUtil
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 
-class CustomVideoDetailDataComponent : IVideoDetailDataComponent {
+class CustomMediaDetailPageDataComponent : IMediaDetailPageDataComponent {
     override suspend fun getAnimeDetailData(
         partUrl: String
     ): Triple<String, String, List<BaseData>> {
@@ -22,7 +22,7 @@ class CustomVideoDetailDataComponent : IVideoDetailDataComponent {
         var desc = ""
         var score = -1F
         var upState = ""
-        val url = CustomConst.host + partUrl
+        val url = Const.host + partUrl
         val document = JsoupUtil.getDocument(url)
         val tags = mutableListOf<TagData>()
 
@@ -112,7 +112,7 @@ class CustomVideoDetailDataComponent : IVideoDetailDataComponent {
                                     )
 
                                     details.add(
-                                        VideoPlayListData(
+                                        EpisodeListData(
                                             parseEpisodes(
                                                 fireLChildren[k].select("[class=main0]")
                                                     .select("[class=movurl]")[0]
@@ -142,7 +142,7 @@ class CustomVideoDetailDataComponent : IVideoDetailDataComponent {
             }
         }
         return Triple(cover, title, mutableListOf<BaseData>().apply {
-            add(VideoCover1Data(cover, score = score).apply {
+            add(Cover1Data(cover, score = score).apply {
                 layoutConfig =
                     BaseData.LayoutConfig(
                         itemSpacing = 12.dp,
@@ -182,8 +182,8 @@ class CustomVideoDetailDataComponent : IVideoDetailDataComponent {
         return episodeList
     }
 
-    private fun parseSeries(element: Element): List<VideoGridItemData> {
-        val videos = mutableListOf<VideoGridItemData>()
+    private fun parseSeries(element: Element): List<MediaInfo1Data> {
+        val videos = mutableListOf<MediaInfo1Data>()
         val elements: Elements = element.select("ul").select("li")
         for (i in elements.indices) {
             val url = elements[i].select("a").attr("href")
@@ -193,7 +193,7 @@ class CustomVideoDetailDataComponent : IVideoDetailDataComponent {
             if (elements[i].select("p").size > 1) {
                 episode = elements[i].select("p")[1].select("a").text()
             }
-            videos.add(VideoGridItemData(title, cover, CustomConst.host + url, episode).apply {
+            videos.add(MediaInfo1Data(title, cover, Const.host + url, episode).apply {
                 action = DetailAction.obtain(url)
             })
         }

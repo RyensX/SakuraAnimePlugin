@@ -1,18 +1,18 @@
 package com.su.sakuraanimeplugin.plugin.components
 
-import com.su.mediabox.pluginapi.v2.action.ClassifyAction
-import com.su.mediabox.pluginapi.v2.been.BaseData
-import com.su.mediabox.pluginapi.v2.been.ClassifyItemData
-import com.su.mediabox.pluginapi.v2.components.IMediaClassifyDataComponent
+import com.su.mediabox.pluginapi.action.ClassifyAction
+import com.su.mediabox.pluginapi.components.IMediaClassifyPageDataComponent
+import com.su.mediabox.pluginapi.data.BaseData
+import com.su.mediabox.pluginapi.data.ClassifyItemData
 import com.su.sakuraanimeplugin.plugin.util.JsoupUtil
 import com.su.sakuraanimeplugin.plugin.util.ParseHtmlUtil
 import org.jsoup.select.Elements
 
-class CustomMediaClassifyDataComponent : IMediaClassifyDataComponent {
+class CustomMediaClassifyPageDataComponent : IMediaClassifyPageDataComponent {
 
     override suspend fun getClassifyItemData(): List<ClassifyItemData> {
         val classifyItemDataList = mutableListOf<ClassifyItemData>()
-        val document = JsoupUtil.getDocument(CustomConst.host + "/a/")
+        val document = JsoupUtil.getDocument(Const.host + "/a/")
         val areaElements: Elements = document.getElementsByClass("area")
         for (i in areaElements.indices) {
             val areaChildren: Elements = areaElements[i].children()
@@ -32,7 +32,7 @@ class CustomMediaClassifyDataComponent : IMediaClassifyDataComponent {
         page: Int
     ): List<BaseData> {
         val classifyList = mutableListOf<BaseData>()
-        var url = CustomConst.host + classifyAction.url
+        var url = Const.host + classifyAction.url
         if (page > 1)
             url += "/${page}.html"
         val document = JsoupUtil.getDocument(url)

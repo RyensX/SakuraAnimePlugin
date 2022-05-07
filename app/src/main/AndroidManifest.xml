@@ -21,7 +21,7 @@
         <!--必须标记组件工厂实现的完整包-->
         <meta-data
             android:name="media_plugin_api_impl"
-            android:value="com.su.sakuraanimeplugin.plugin.ComponentFactory" />
+            android:value="com.su.sakuraanimeplugin.plugin.PluginFactory" />
 
         <activity
             android:name=".OtherActivity"

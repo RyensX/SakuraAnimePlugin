@@ -3,20 +3,21 @@ package com.su.sakuraanimeplugin.plugin.components
 import android.graphics.Typeface
 import android.util.Log
 import android.view.Gravity
-import com.su.mediabox.pluginapi.UI.dp
-import com.su.mediabox.pluginapi.v2.action.CustomPageAction
-import com.su.mediabox.pluginapi.v2.action.DetailAction
-import com.su.mediabox.pluginapi.v2.been.*
-import com.su.mediabox.pluginapi.v2.components.IHomeDataComponent
+import com.su.mediabox.pluginapi.action.CustomPageAction
+import com.su.mediabox.pluginapi.action.DetailAction
+import com.su.mediabox.pluginapi.components.IHomePageDataComponent
+import com.su.mediabox.pluginapi.data.*
+import com.su.mediabox.pluginapi.util.UIUtil.dp
+import com.su.sakuraanimeplugin.plugin.components.Const.host
 import com.su.sakuraanimeplugin.plugin.util.JsoupUtil
 import java.lang.StringBuilder
 
-class CustomHomeDataComponent : IHomeDataComponent {
+class CustomHomePageDataComponent : IHomePageDataComponent {
 
     override suspend fun getData(page: Int): List<BaseData>? {
         if (page != 1)
             return null
-        val url = CustomConst.host
+        val url = host
         val doc = JsoupUtil.getDocument(url)
         val data = mutableListOf<BaseData>()
 
@@ -110,7 +111,8 @@ class CustomHomeDataComponent : IHomeDataComponent {
                             val episode = video.select("[target]").first()?.text()
 
                             if (!name.isNullOrBlank() && !videoUrl.isNullOrBlank() && !coverUrl.isNullOrBlank()) {
-                                data.add(VideoGridItemData(name, coverUrl, videoUrl, episode ?: "")
+                                data.add(
+                                    MediaInfo1Data(name, coverUrl, videoUrl, episode ?: "")
                                     .apply {
                                         action = DetailAction.obtain(videoUrl)
                                     })

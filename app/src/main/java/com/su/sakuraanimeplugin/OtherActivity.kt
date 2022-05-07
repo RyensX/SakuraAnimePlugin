@@ -4,8 +4,8 @@ import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.su.sakuraanimeplugin.plugin.components.CustomConst
 import com.su.sakuraanimeplugin.databinding.ActivityOtherBinding
+import com.su.sakuraanimeplugin.plugin.components.Const.host
 
 class OtherActivity : AppCompatActivity() {
 
@@ -24,7 +24,7 @@ class OtherActivity : AppCompatActivity() {
                 PackageManager.GET_META_DATA
             ).metaData?.getInt("media_plugin_api_version", -1)
         }
-            数据源地址： ${CustomConst.host}
+            数据源地址： $host
             开源地址：https://github.com/RyensX/SakuraAnimePlugin
             
             这是一个解析樱花动漫的MediaBox插件示例
