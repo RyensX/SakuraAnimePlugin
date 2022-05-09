@@ -15,8 +15,8 @@ import java.util.*
 
 class UpdateTablePageDataComponent : ICustomPageDataComponent {
 
-    override val pageName = "更新表"
-    override fun isShowBack() = false
+    override val pageName = "时间表"
+    //override fun isShowBack() = false
 
     private val days = mutableListOf<String>()
     private lateinit var updateList: Elements

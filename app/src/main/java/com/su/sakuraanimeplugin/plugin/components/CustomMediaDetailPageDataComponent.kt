@@ -193,7 +193,11 @@ class CustomMediaDetailPageDataComponent : IMediaDetailPageDataComponent {
             if (elements[i].select("p").size > 1) {
                 episode = elements[i].select("p")[1].select("a").text()
             }
-            videos.add(MediaInfo1Data(title, cover, Const.host + url, episode).apply {
+            videos.add(MediaInfo1Data(
+                title, cover, Const.host + url, episode,
+                nameColor = Color.WHITE,
+                coverHeight = 120.dp
+            ).apply {
                 action = DetailAction.obtain(url)
             })
         }
