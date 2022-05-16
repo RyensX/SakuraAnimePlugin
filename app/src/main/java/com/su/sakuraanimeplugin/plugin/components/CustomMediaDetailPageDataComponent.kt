@@ -1,6 +1,7 @@
 package com.su.sakuraanimeplugin.plugin.components
 
 import android.graphics.Color
+import android.graphics.Typeface
 import android.view.Gravity
 import com.su.mediabox.pluginapi.components.IMediaDetailPageDataComponent
 import com.su.mediabox.pluginapi.action.ClassifyAction
@@ -14,9 +15,7 @@ import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 
 class CustomMediaDetailPageDataComponent : IMediaDetailPageDataComponent {
-    override suspend fun getAnimeDetailData(
-        partUrl: String
-    ): Triple<String, String, List<BaseData>> {
+    override suspend fun getMediaDetailData(partUrl: String): Triple<String, String, List<BaseData>> {
         var cover = ""
         var title = ""
         var desc = ""
@@ -160,10 +159,20 @@ class CustomMediaDetailPageDataComponent : IMediaDetailPageDataComponent {
             )
             add(TagFlowData(tags))
             add(
-                LongTextData(desc.addDouBanSearch(title)).apply {
+                LongTextData(desc).apply {
                     fontColor = Color.WHITE
                 }
             )
+            add(LongTextData(douBanSearch(title)).apply {
+                fontSize = 14F
+                fontColor = Color.WHITE
+                fontStyle = Typeface.BOLD
+            })
+            add(SimpleTextData("·$upState").apply {
+                fontSize = 14F
+                fontColor = Color.WHITE
+                fontStyle = Typeface.BOLD
+            })
             addAll(details)
         })
     }
@@ -204,6 +213,6 @@ class CustomMediaDetailPageDataComponent : IMediaDetailPageDataComponent {
         return videos
     }
 
-    private fun String.addDouBanSearch(name: String) =
-        this + "\n🎞 豆瓣评分 https://m.douban.com/search/?query=${name.urlEncode()}"
+    private fun douBanSearch(name: String) =
+        "·豆瓣评分：https://m.douban.com/search/?query=${name.urlEncode()}"
 }
