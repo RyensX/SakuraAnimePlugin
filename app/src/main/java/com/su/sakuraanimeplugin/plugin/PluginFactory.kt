@@ -2,6 +2,7 @@ package com.su.sakuraanimeplugin.plugin
 
 import com.su.mediabox.pluginapi.components.*
 import com.su.mediabox.pluginapi.IPluginFactory
+import com.su.sakuraanime2plugin.plugin.components.MediaUpdateDataComponent
 import com.su.sakuraanimeplugin.plugin.components.*
 
 /**
@@ -22,6 +23,7 @@ class PluginFactory : IPluginFactory() {
         //自定义页面，需要使用具体类而不是它的基类（接口）
         RankPageDataComponent::class.java -> RankPageDataComponent()
         UpdateTablePageDataComponent::class.java -> UpdateTablePageDataComponent()
+        IMediaUpdateDataComponent::class.java -> MediaUpdateDataComponent
         else -> null
     } as? T
 
