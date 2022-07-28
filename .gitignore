@@ -10,3 +10,4 @@
 local.properties
 *.apk
 output-metadata.json
+*.mpp
