@@ -2,8 +2,10 @@ package com.su.sakuraanimeplugin.plugin
 
 import com.su.mediabox.pluginapi.components.*
 import com.su.mediabox.pluginapi.IPluginFactory
+import com.su.mediabox.pluginapi.util.PluginPreferenceIns
 import com.su.sakuraanime2plugin.plugin.components.MediaUpdateDataComponent
 import com.su.sakuraanimeplugin.plugin.components.*
+import com.su.sakuraanimeplugin.plugin.danmaku.OyydsDanmaku
 
 /**
  * 每个插件必须实现本类
@@ -13,6 +15,10 @@ import com.su.sakuraanimeplugin.plugin.components.*
 class PluginFactory : IPluginFactory() {
 
     override val host: String = Const.host
+
+    override fun pluginLaunch() {
+        PluginPreferenceIns.initKey(OyydsDanmaku.OYYDS_DANMAKU_ENABLE, defaultValue = true)
+    }
 
     override fun <T : IBasePageDataComponent> createComponent(clazz: Class<T>) = when (clazz) {
         IVideoPlayPageDataComponent::class.java -> CustomVideoPlayPageDataComponent()

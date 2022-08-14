@@ -47,4 +47,7 @@ dependencies {
     implementation("org.jsoup:jsoup:1.14.3")
     androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
     androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.1")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    compileOnly("com.kuaishou:akdanmaku:1.0.3")
 }
