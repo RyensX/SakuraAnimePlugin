@@ -21,24 +21,28 @@ class CustomVideoPlayPageDataComponent : IVideoPlayPageDataComponent {
         episodeName: String,
         episodeUrl: String
     ): List<DanmakuItemData>? {
-        val config = PluginPreferenceIns.get(OyydsDanmaku.OYYDS_DANMAKU_ENABLE, true)
-        if (!config)
-            return null
-        val name = videoName.trimAll()
-        var episode = episodeName.trimAll()
-        //剧集对集去除所有额外字符，增大弹幕适应性
-        val episodeIndex = episode.indexOf("集")
-        if (episodeIndex > -1 && episodeIndex != episode.length - 1) {
-            episode = episode.substring(0, episodeIndex + 1)
-        }
-        Log.d("请求Oyyds弹幕", "媒体:$name 剧集:$episode")
-        return oyydsDanmakuApis.getDanmakuData(name, episode).data.let { danmukuData ->
-            val data = mutableListOf<DanmakuItemData>()
-            danmukuData.data.forEach { dataX ->
-                OyydsDanmakuParser.convert(dataX)?.also { data.add(it) }
+        try {
+            val config = PluginPreferenceIns.get(OyydsDanmaku.OYYDS_DANMAKU_ENABLE, true)
+            if (!config)
+                return null
+            val name = videoName.trimAll()
+            var episode = episodeName.trimAll()
+            //剧集对集去除所有额外字符，增大弹幕适应性
+            val episodeIndex = episode.indexOf("集")
+            if (episodeIndex > -1 && episodeIndex != episode.length - 1) {
+                episode = episode.substring(0, episodeIndex + 1)
             }
-            episodeDanmakuId = danmukuData.episode.id
-            data
+            Log.d("请求Oyyds弹幕", "媒体:$name 剧集:$episode")
+            return oyydsDanmakuApis.getDanmakuData(name, episode).data.let { danmukuData ->
+                val data = mutableListOf<DanmakuItemData>()
+                danmukuData?.data?.forEach { dataX ->
+                    OyydsDanmakuParser.convert(dataX)?.also { data.add(it) }
+                }
+                episodeDanmakuId = danmukuData?.episode?.id ?: ""
+                data
+            }
+        } catch (e: Exception) {
+            throw RuntimeException("弹幕加载错误：${e.message}")
         }
     }
 

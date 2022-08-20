@@ -3,9 +3,10 @@ package com.su.sakuraanimeplugin.plugin.danmaku
 import retrofit2.http.*
 
 interface OyydsDanmakuApis {
-    @GET("https://api.danmu.oyyds.top/api/message/getSome?type=1")
+
+    @GET("https://api.danmu.oyyds.top/api/message/getSomeV3?type=1&platforms=base,bilibili,dandan")
     suspend fun getDanmakuData(
-        @Query("name") name: String,
+        @Query("keyword") keyword: String,
         @Query("number") number: String
     ): OyydsDanmaku
 
@@ -19,4 +20,5 @@ interface OyydsDanmakuApis {
         @Field("type") type: String,
         @Field("color") color: String
     )
+
 }

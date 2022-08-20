@@ -2,7 +2,7 @@ package com.su.sakuraanimeplugin.plugin.danmaku
 
 data class OyydsDanmaku(
     val code: Int,
-    val `data`: Data,
+    val `data`: Data?,
     val msg: String
 ) {
 
@@ -11,7 +11,7 @@ data class OyydsDanmaku(
     }
 
     data class Data(
-        val `data`: List<DataX>,
+        val `data`: List<DataX>?,
         val episode: Episode,
         val total: Int
     )
