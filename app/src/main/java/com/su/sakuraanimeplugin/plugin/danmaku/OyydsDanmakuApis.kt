@@ -4,6 +4,7 @@ import retrofit2.http.*
 
 interface OyydsDanmakuApis {
 
+    @Headers("user-agent: MediaBox/SakuraAnimePlugin")
     @GET("https://api.danmu.oyyds.top/api/message/getSomeV3?type=1&platforms=base,bilibili,dandan")
     suspend fun getDanmakuData(
         @Query("keyword") keyword: String,
