@@ -11,6 +11,7 @@ import com.su.mediabox.pluginapi.data.*
 import com.su.mediabox.pluginapi.util.TextUtil.urlEncode
 import com.su.mediabox.pluginapi.util.UIUtil.dp
 import com.su.sakuraanimeplugin.plugin.util.JsoupUtil
+import com.su.sakuraanimeplugin.plugin.util.Text.safeUrl
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 
@@ -40,7 +41,7 @@ class CustomMediaDetailPageDataComponent : IMediaDetailPageDataComponent {
                             when (fireLChildren[k].className()) {
                                 "thumb l" -> {
                                     cover = fireLChildren[k]
-                                        .select("img").attr("src")
+                                        .select("img").attr("src").safeUrl()
                                 }
                                 "rate r" -> {   //其他信息，如标签、地区等
                                     val rateR = fireLChildren[k]

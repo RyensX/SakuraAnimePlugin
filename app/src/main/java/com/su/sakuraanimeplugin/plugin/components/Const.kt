@@ -2,7 +2,7 @@ package com.su.sakuraanimeplugin.plugin.components
 
 object Const {
 
-    val host: String = "http://www.yinghuacd.com"
+    val host: String = "http://www.iyinghua.io/"
 
     const val INVALID_GREY: Int = 0xff999999.toInt()
 

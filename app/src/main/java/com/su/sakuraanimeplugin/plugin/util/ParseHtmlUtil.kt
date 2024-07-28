@@ -6,6 +6,7 @@ import com.su.mediabox.pluginapi.action.ClassifyAction
 import com.su.mediabox.pluginapi.action.DetailAction
 import com.su.mediabox.pluginapi.data.*
 import com.su.sakuraanimeplugin.plugin.components.Const.host
+import com.su.sakuraanimeplugin.plugin.util.Text.safeUrl
 import java.net.URL
 
 object ParseHtmlUtil {
@@ -78,7 +79,7 @@ object ParseHtmlUtil {
         val results: Elements = element.select("ul").select("li")
         for (i in results.indices) {
             var cover = results[i].select("a").select("img").attr("src")
-            cover = getCoverUrl(cover, imageReferer)
+            cover = getCoverUrl(cover, imageReferer).safeUrl()
             val title = results[i].select("h2").select("a").text()
             val url = results[i].select("h2").select("a").attr("href")
             val episode = results[i].select("span").select("font").text()

@@ -14,6 +14,7 @@ import com.su.mediabox.pluginapi.util.UIUtil.dp
 import com.su.mediabox.pluginapi.util.UIUtil.sp
 import com.su.sakuraanimeplugin.plugin.components.Const.host
 import com.su.sakuraanimeplugin.plugin.util.JsoupUtil
+import com.su.sakuraanimeplugin.plugin.util.Text.safeUrl
 import java.lang.StringBuilder
 
 class CustomHomePageDataComponent : IHomePageDataComponent {
@@ -43,7 +44,7 @@ class CustomHomePageDataComponent : IHomePageDataComponent {
                                 ext.append(" ").append(it)
                             }
                             val videoUrl = bannerItem.getElementsByTag("a").first()?.attr("href")
-                            val bannerImage = bannerItem.select("img").attr("src")
+                            val bannerImage = bannerItem.select("img").attr("src").safeUrl()
                             if (bannerImage.isNotBlank()) {
                                 Log.d("添加横幅项", "封面：$bannerImage 链接：$videoUrl")
                                 bannerItems.add(
@@ -154,7 +155,7 @@ class CustomHomePageDataComponent : IHomePageDataComponent {
                         video.getElementsByClass("tname").first()?.select("a")?.first()?.apply {
                             val name = text()
                             val videoUrl = attr("href")
-                            val coverUrl = video.select("img").first()?.attr("src")
+                            val coverUrl = video.select("img").first()?.attr("src")?.safeUrl()
                             val episode = video.select("[target]").first()?.text()
 
                             if (!name.isNullOrBlank() && !videoUrl.isNullOrBlank() && !coverUrl.isNullOrBlank()) {
